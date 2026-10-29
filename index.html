@@ -71,6 +71,7 @@ body{background:#d8dbe2;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Tex
 .note.hint{background:#fff4bf;color:#7a5a00;padding:6px 12px;border-radius:12px;font-weight:600}
 .chips button.hint{flex:1 1 100%;background:#fff4bf;color:#7a5a00;font-weight:600}
 @keyframes pulse{50%{transform:scale(1.3)}}
+.dh{background:#1f3a5f;color:#fff;padding:9px 12px;font-weight:700;font-size:13px}
 .dots{display:flex;gap:4px;padding:13px 14px}
 .dots span{width:8px;height:8px;border-radius:50%;background:#a5a5ab;animation:blink 1.2s infinite}
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
@@ -118,10 +119,11 @@ button:focus-visible{outline:3px solid #ff9f0a;outline-offset:2px}
 </div>
 
 <script>
-let MAX = 24, TOTAL = 500000, PAY = [], stage = 1, unlocked = false, NM = "민수", GF = "윤서", HANDLE = "minsu_daily";
+let MAX = 24, TOTAL = 500000, PAY = [], stage = 1, unlocked = false, NM = "민수", GF = "윤서", HANDLE = "minsu_daily", unlocked3 = false, TT, EE, HH;
 const CFG = {
   1:{nm:"민수", gf:"윤서", handle:"minsu_daily", total:500000, max:24, hints:5, d:[3,-8,-16]},
-  2:{nm:"태호", gf:"다은", handle:"taeho_biz", total:1000000, max:50, hints:3, d:[6,-5,-11]}
+  2:{nm:"태호", gf:"다은", handle:"taeho_biz", total:1000000, max:50, hints:3, d:[6,-5,-11]},
+  3:{nm:"박 사장", gf:"사모님", handle:"boss_park", total:10000000, max:50, hints:2, d:[8,-5,-11]}
 };
 const PHASE = [[70,"민수가 슬슬 초조해졌다."],[40,"민수의 핑계가 바닥나고 있다."],[15,"민수가 마지막 발악을 한다."]];
 const T = [
@@ -260,6 +262,58 @@ const SHOT = {
   empty: () => '<div class="shot">' + bar('background:#0f6b4f;color:#fff') + '<div class="bh"><small>새싹뱅크</small><b>입금내역 · 오늘</b></div>'
     + '<div class="empty"><div style="font-size:30px">📭</div><div style="margin-top:6px"><b>조회된 입금내역이 없습니다</b></div><div style="margin-top:4px;font-size:10px">입금액 합계 0원</div></div></div>'
 };
+const doc = (t, rows, memo) => '<div class="shot">' + bar('') + '<div class="dh">' + t + '</div>' + rows.map(r => '<div class="row"><div>' + r[0] + '</div><div class="a">' + r[1] + '</div></div>').join('') + (memo ? '<div class="memo">' + memo + '</div>' : '') + '</div>';
+Object.assign(SHOT, {
+  notice: () => doc("내용증명우편 접수증", [["발신인","나 (대리: 법무법인 ○○)"],["수신인","박 사장"],["제목","대여금 10,000,000원 반환 청구"],["이행기한","수신 후 3일 이내"],["접수일","2026.10.29"]], "※ 불이행 시 법적 조치 예정"),
+  order: () => doc("전자소송 · 지급명령 신청", [["사건번호","2026차전 4829"],["채권자","나"],["채무자","박 사장"],["청구금액","10,000,000원"],["상태","접수 완료"]], ""),
+  seize: () => doc("채권가압류 결정문", [["사건","2026카단 1731"],["채무자","박 사장"],["대상","예금채권"],["청구금액","10,000,000원"],["결정","인용"]], "※ 사업장 통장이 묶였습니다"),
+  court: () => doc("소장 접수증", [["사건","2026가소 5532 대여금"],["청구취지","원금 + 지연손해금"],["변론기일","2026.12.03 14:00"],["법정","제302호"]], ""),
+  deal: () => doc("합의서", [["원금","10,000,000원"],["위자료","10,000,000원"],["합계","20,000,000원"],["서명","박 사장 ✍️"]], "※ 합의 즉시 입금")
+});
+T[1].img = "dyn";
+const T3 = [
+  {ic:"📨", n:"변호사 내용증명", cost:150000, img:"notice", m:["변호사 통해 내용증명 발송했습니다. 3일 내 이행 바랍니다.","[내용증명 우편 발송 완료] 수신 확인되는 대로 법적 조치 들어갑니다.","법무법인에서 서면 보냈습니다. 답변 기한은 3일입니다."]},
+  {ic:"📝", n:"지급명령 신청", cost:100000, img:"order", m:["법원에 지급명령 신청했습니다. 이의신청 안 하면 그대로 확정됩니다.","전자소송으로 지급명령 접수했어요. 접수번호 받았습니다.","지급명령 들어갑니다. 2주 안에 이의신청 안 하면 끝이에요."]},
+  {ic:"🔒", n:"재산 가압류", cost:300000, img:"seize", m:["박 사장님 명의 통장, 가압류 신청 들어갑니다.","가압류 결정문 받았습니다. 사업장 통장 묶였습니다.","예금채권 가압류 결정 났어요. 월급날 기대하세요."]},
+  {ic:"🏛️", n:"민사소송 제기", cost:700000, img:"court", m:["소장 접수했습니다. 첫 변론기일 잡혔어요.","원금에 지연이자까지 청구하는 소 제기했습니다.","법정에서 뵙겠습니다. 증거는 다 준비돼 있어요."]},
+  {ic:"🚪", n:"직접 찾아가기", cost:0, m:["사무실 앞입니다. 문 좀 열어보시죠.","지금 건물 1층이에요. 올라갑니다.","주소 확인하고 왔습니다. 얼굴 보고 얘기하죠."]},
+  {ic:"🤝", n:"합의 제안", cost:0, img:"deal", m:["원금에 위자료 붙여서 합의하시죠. 오늘 안에요.","합의서 초안 보냅니다. 서명만 하시면 끝.","서로 좋게 끝냅시다. 조건은 합의서에 적어놨어요."]}
+];
+// s: [내용증명, 지급명령, 가압류, 소송, 찾아가기, 합의]
+const E3 = [
+  {m:["차용증 있어? 없잖아. 증거 있냐?","내가 언제 빌렸다고 그래? 종이 한 장 없는데?"], s:[1,2,0,1,0,0],
+   r:[["…이체내역이랑 카톡까지 서류로 냈다고? 허, 철저하네.","접수번호까지 받았다고? 이거 이의신청 안 하면 끝이잖아…"],["증거야 있겠지, 근데 그게 끝은 아니야. 두고 봐.","흠… 일단 서류는 받았다."],["증거 없는 거 맞잖아. 나는 아무것도 몰라.","어디 해봐. 난 모르는 일이야."]]},
+  {m:["그건 빌린 게 아니라 투자받은 거라니까?","야 그건 사업 투자금이었어. 돈 날렸으면 같이 날린 거지."], s:[0,1,0,2,0,1],
+   r:[["투자? 그건 판사님한테 가서 얘기해야겠네… 이거 지겠는데?","법정에서 가리자고? …좋아, 그렇게 하자. (식은땀)"],["투자인지 대여인지 따져보자는 거네… 일단 조건부터 들어볼게.","음… 일단 변호사랑 상의해 볼게."],["투자받았으면 수익 나눠야지, 갚으라는 건 억지야.","그건 계약서에 없잖아. 억지 부리지 마."]]},
+  {m:["나 명의로 된 재산 없어. 받을 수 있으면 받아봐","배 째라 해. 압류할 게 있어야 압류하지?"], s:[1,0,2,1,0,0],
+   r:[["…통장이 묶였다고? 어떻게 알았어?? 월급도 못 받게 생겼네!","가압류? 사업 통장까지?? 아 그건 안 되는데!!"],["그래? 한번 해보든가. (불안해 보인다)","조회했다고? …그래도 큰돈은 안 들어있어."],["재산 없다니까? 압류해 봐야 소용없어.","배 째라. 마음대로 해."]]},
+  {m:["변호사 쓰면 비용이 더 나올걸? 포기해라","천만 원 받으려고 변호사비 쓰냐? 남는 게 있겠어?"], s:[2,1,0,0,0,1],
+   r:[["…변호사가 보냈다고? 진짜 내용증명이네. 야 이거 진지하잖아.","잠깐, 3일 이내 이행? 불이익 줄 수 있다는 거잖아…"],["비용 걱정 안 하나 보네… 근데 나도 봐주진 않는다.","음… 변호사는 변호사고."],["변호사비가 더 나올 텐데 후회할걸?","그럼 해보시든가. 시간만 낭비야."]]},
+  {m:["고소해 봐라. 나 법 쪽 아는 사람 많다","나 아는 변호사 선배 있어. 소송해 봐야 질질 끌어"], s:[0,0,1,2,0,1],
+   r:[["…진짜 소장을 냈다고? 변론기일까지 잡혔다고?? 아 이건 좀…","원금에 지연이자까지 청구한다고? 이건 얘기가 다른데?"],["소송이야 할 수는 있겠지. 나도 준비는 해 두지.","음… 일단 변호사한테 연락해 볼게."],["고소? 해봐. 나 판사도 안다.","그 정도로 나 안 무서워."]]},
+  {m:["법으로 가면 우리 사이 끝이야. 그래도 해볼래?","야 법으로 가면 관계는 끝이야 진짜로"], s:[1,0,0,0,0,2],
+   r:[["…그럼 서로 좋게 끝내자. 합의서 어디 있어? 서명할게.","알았어, 얘기하자. 위자료 얘기도 들어는 볼게."],["합의라… 일단 조건을 보고 얘기하자.","그래, 한번 보자. 근데 너무 세게 나오면 안 해."],["법으로 가자는 사람이 합의는 무슨 합의야.","합의는 무슨. 얘기 끝났어."]]},
+  {m:["나 지금 해외 출장 중이라 연락이 안 돼","요즘 현장 때문에 정신이 없어. 해외라 통화도 안 돼"], s:[2,0,0,0,0,1],
+   r:[["메일로 서류가 왔다고…? 이건 읽씹하면 안 되는 거잖아.","내용증명을 받으면 기록이 남네… 알았어 연락할게."],["일단 확인은 했어. 귀국하면 연락할게.","서류는 받았다. 근데 지금은 못 해."],["해외라니까? 지금은 얘기 못 해.","나중에 다시 연락해. 지금 비행기야."]]},
+  {m:["찾아오기만 해봐. 가만 안 둔다","야 사무실 오지 마. 경비 부른다"], s:[0,1,0,1,2,0],
+   r:[["…진짜 오셨어요?! 아니 올라오세요, 얘기합시다…!","(문틈으로 빼꼼) 아 사장님~ 이러시면 곤란한데… 계좌 불러드릴게요."],["일단 들어오세요. 커피 한 잔 하시죠. (눈치를 본다)","사무실까지 오셨네… 일단 얘기만 들어볼게."],["가만 안 둔다고 했지!! 경비 아저씨!!","(책상을 치며 일어난다) 오지 말라 그랬잖아!!"]]},
+  {m:["(사무실 간판이 내려갔다) 폐업했어. 줄 돈 없어","나 사업 접었어. 압류해 가라, 아무것도 없을 테니까"], s:[0,0,1,0,2,1],
+   r:[["…폐업했는데 어떻게 찾아왔어? 창고에 이것저것 있긴 한데… 계좌 줘!","(창고에서 걸어 나온다) 어… 이거 팔면 오백은 되는데…"],["폐업하긴 했지만 장비는 있어. 좀 정리해서 보내줄게.","일단 얘기는 들어볼게."],["폐업했으니까 줄 수가 없다고. 이해해 줘.","없다니까? 가져갈 거 하나도 없어."]]},
+  {m:["반 깎아주면 지금 바로 한 번에 줄게","오백만 원 이하면 오늘 줄 수 있는데?"], s:[1,1,0,2,0,0],
+   r:[["…소송까지 간다고? 지연이자에 소송비까지 내야 하잖아! 원금 다 줄게!","아 진짜 소장 냈구나… 알았어, 전액 줄게."],["협상 여지는 있다는 거네. 생각해 볼게.","그럼 얼마까지 가능한데?"],["싫으면 말고. 난 반이면 줘도 아깝지 않아.","반 아니면 안 줘. 끝."]]},
+  {m:["주소지 옮겼다. 송달 안 될걸?","나 이사했어. 새 주소 아는 사람 없을걸?"], s:[1,0,2,0,1,0],
+   r:[["…사업장 통장에 가압류가 걸렸다고? 주소랑 상관없이 되는 거야?! 아 그건 아니지!","재산을 묶으면 되는구나… 이래서 변호사 쓰는구나."],["그래, 다른 방법도 있겠지. 알겠어.","음… 주소 확인해 보든가."],["주소 모르면 어쩔 건데? 못 찾지?","송달 안 되면 아무것도 못 해. 알지?"]]},
+  {bill:1, m:["너 때문에 병원 다녀왔다. 깽값 80만 원 내놔!","진단서 끊었다. 합의금으로 깽값 80만 원이면 봐줄게."], s:[1,0,0,1,0,2],
+   r:[["…알았어, 깽값 80만 원 전액 돌려줄게. 아까 건 사과할게.","합의서에 사인할게. 치료비는 내가 낼게."],["그럼 반은 돌려줄게. 나머지는 쌤쌤이로 하자.","절반은 합의하지. 이만하면 많이 봐준 거야."],["진단서 끊었다고! 깽값 안 주면 고소할 거야!","내 치료비는 누가 내는데??"]]}
+];
+const H3 = [
+  "서류 한 장으로 상대가 직접 반박해야 하는 방법이 있어.", "누가 맞는지 가려줄 곳은 한 군데뿐이야.", "재산을 묶어두면 입장이 달라지지.",
+  "싼 것부터 시작해서 무서움을 주는 게 좋겠어.", "말로 하는 것보다 접수증이 무서운 법이야.", "끝까지 가기 전에 서로 이득 보는 길을 보여줘.",
+  "연락이 안 되는 사람에겐 기록이 남는 서면부터.", "허세 부리는 사람은 막상 눈앞에 나타나면 어떨까?",
+  "사무실이 비었다면… 직접 가서 확인해 보는 것도 한 방법이야.", "깎아주는 척하지 말고, 비용이 더 드는 길을 보여줘.",
+  "연락처를 피하면 재산을 먼저 묶어 놓자.", "깽값은 합의로 돌려받자."
+];
+const R4 = [["…진짜 오셨어요? 아 올라오세요!"],["일단 들어오세요… (불편한 표정)","직접 오셨네요. 앉으세요."],["어딜 와!! 경비 아저씨!! (멱살잡이가 시작됐다)","왜 여기까지 와? 나가!! (분위기가 험악해진다)"]];
 function pickImg(e){ return rnd(e.img || ["bank","chat"]); }
 function imgBubble(key){
   if (lastB && lastB.side === "me") lastB.el.classList.remove("tail");
@@ -278,14 +332,14 @@ function bubble(side, text, raw){
 function note(cls, text){ const d = document.createElement("div"); d.className = cls; d.textContent = tx(text); $("chat").appendChild(d); lastB = null; $("chat").scrollTop = 1e6; return d; }
 function meters(){
   $("g").style.width = Math.max(0, S.g) + "%"; $("gv").textContent = Math.max(0, S.g);
-  $("f").style.width = (S.paid / TOTAL * 100) + "%"; $("fv").textContent = won(S.paid);
-  $("turn").textContent = "남은 기회 " + Math.max(0, MAX - S.t) + "번";
+  $("f").style.width = Math.min(100, S.paid / TOTAL * 100) + "%"; $("fv").textContent = won(S.paid);
+  $("turn").textContent = "남은 기회 " + Math.max(0, MAX - S.t) + "번" + (stage === 3 ? " · 비용 " + won(S.cost) : "");
 }
 function chips(on){
   $("chips").innerHTML = "";
-  T.forEach((t,i)=>{
+  TT.forEach((t,i)=>{
     const b = document.createElement("button");
-    b.textContent = t.ic + " " + t.n; b.disabled = !on;
+    b.textContent = t.ic + " " + t.n + (t.cost ? " −" + t.cost / 10000 + "만" : ""); b.disabled = !on;
     b.onclick = () => pick(i, b); $("chips").appendChild(b);
   });
   const h = document.createElement("button"); h.className = "hint"; h.id = "hintBtn";
@@ -295,13 +349,13 @@ function chips(on){
 }
 function useHint(){
   if (busy || S.hinted || S.hints <= 0) return;
-  S.hints--; S.hinted = true; note("note hint", "💡 " + H[S.ei]);
+  S.hints--; S.hinted = true; note("note hint", "💡 " + HH[S.ei]);
   const h = $("hintBtn"); h.textContent = "💡 힌트 (" + S.hints + ")"; h.disabled = true;
 }
 function pick(i, btn){
   if (busy) return;
   [...$("chips").children].forEach(x => x.classList.remove("on")); btn.classList.add("on");
-  pend = {i, text: rnd(T[i].m), img: i === 1 ? pickImg(S.e) : null};
+  pend = {i, text: rnd(TT[i].m), img: TT[i].img ? (TT[i].img === "dyn" ? pickImg(S.e) : TT[i].img) : null};
   $("txt").textContent = (pend.img ? "🖼️ " : "") + tx(pend.text); $("txt").className = "f"; $("send").className = "on";
 }
 function clearInput(){ pend = null; $("txt").textContent = "iMessage"; $("txt").className = ""; $("send").className = ""; }
@@ -311,16 +365,22 @@ function applyStage(){
   PAY = Array.from({length:10}, (_, k) => [90 - 10 * k, TOTAL / 10]);
   $("av").textContent = NM[0]; $("nm").innerHTML = NM + " <i>›</i>";
   $("gl").textContent = NM + " 버티기"; $("ttl").textContent = "그 돈 언제 줄래 · " + won(TOTAL);
-  $("bd").style.display = stage === 1 ? "" : "none";
-  $("back").classList.toggle("alert", unlocked && stage === 1);
+  TT = stage === 3 ? T3 : T; EE = stage === 3 ? E3 : E; HH = stage === 3 ? H3 : H;
+  $("bd").style.display = (stage === 1 || (stage === 2 && unlocked3)) ? "" : "none";
+  $("bd").textContent = stage === 1 ? "3" : "1";
+  $("back").classList.toggle("alert", (unlocked && stage === 1) || (unlocked3 && stage === 2));
 }
 function start(){
   applyStage();
-  S = {g:100, paid:0, t:0, lastT:-1, done:{}, hints:CFG[stage].hints, hinted:false}; last = -1; busy = false; lastB = null; clearInput();
+  S = {g:100, paid:0, t:0, lastT:-1, done:{}, hints:CFG[stage].hints, hinted:false, cost:0}; last = -1; busy = false; lastB = null; clearInput();
   $("chat").innerHTML = "";
   if (stage === 1) {
     note("time", "iMessage\n오늘 오전 9:41");
     note("note", "2년 전 추석, 민수가 “월급날 바로 줄게” 하고 빌려간 " + won(TOTAL) + ".\n핑계마다 잘 통하는 방법이 다르다. 같은 수만 계속 쓰면 안 먹힌다.\n막히면 💡힌트를 써 보자.");
+  } else if (stage === 3) {
+    note("time", "iMessage\n오늘 오후 3:05");
+    note("note", "작년 겨울, 인테리어 사업을 한다던 박 사장이 “3개월만 쓰고 이자 쳐서 갚겠다”며 빌려간 " + won(TOTAL) + ".\n이번엔 법적 절차로 간다. 비용이 들어가니 신중하게. 기회는 " + MAX + "번.\n※ 현실에서는 폭력은 절대 안 돼요. 법적 절차를 이용하세요.");
+    bubble("them", "어이 젊은 친구, 천만 원? 그거 내가 왜 갚아야 되는데?"); bubble("them", "고소할 테면 해봐 ㅋㅋ 변호사 비용이 더 나올걸?");
   } else {
     note("time", "iMessage\n오늘 오후 7:12");
     note("note", "3년 전, 대학 선배 태호가 “사업 대박 나면 두 배로 갚는다”며 빌려간 " + won(TOTAL) + ".\n이번엔 훨씬 끈질기다. 기회는 " + MAX + "번.");
@@ -330,8 +390,10 @@ function start(){
 }
 function next(){
   if (S.t >= MAX) return end(false);
-  const n = stage === 2 ? E.length : 13; let i; do { i = Math.floor(Math.random() * n) } while (i === last);
-  last = i; S.e = E[i]; S.ei = i; S.hinted = false;
+  let i;
+  if (S.force !== undefined) { i = S.force; S.force = undefined; }
+  else { const n = stage === 3 ? 11 : stage === 2 ? EE.length : 13; do { i = Math.floor(Math.random() * n) } while (i === last); }
+  last = i; S.e = EE[i]; S.ei = i; S.hinted = false;
   if (S.e.sys) note("note", pickLine(S.e.sys));
   else if (S.e.isSys) note("note", rnd(S.e.m));
   else bubble("them", rnd(S.e.m));
@@ -351,14 +413,25 @@ $("send").onclick = async function(){
   let sc = S.e.s[p.i];
   const rep = p.i === S.lastT; if (rep) sc = Math.max(0, sc - 1);
   S.lastT = p.i; S.t++;
-  S.g = Math.min(100, Math.max(0, S.g + CFG[stage].d[sc]));
+  if (!S.e.bill) S.g = Math.min(100, Math.max(0, S.g + CFG[stage].d[sc]));
+  const cst = stage === 3 ? (TT[p.i].cost || 0) : 0; S.cost += cst;
   const tb = document.createElement("div"); tb.className = "tb"; tb.textContent = ["👎","👍","‼️"][sc]; my.appendChild(tb);
-  bubble("them", pickLine((R2[p.i] || S.e.r)[2 - sc]));
+  const RR = (stage < 3 && R2[p.i]) || (stage === 3 && p.i === 4 && !S.e.bill && S.ei !== 7 && S.ei !== 8 && R4) || S.e.r;
+  bubble("them", pickLine(RR[2 - sc]));
   note("note", rep ? "같은 수를 또 썼다. 민수가 눈치챘다." : ["역효과… 민수가 기운을 되찾았다.","먹혔다!","효과가 굉장했다!"][sc]);
+  if (cst) note("note", "🧾 " + TT[p.i].n + " 비용 " + won(cst) + " 지출");
+  if (S.e.bill) {
+    if (sc === 2) { S.cost -= S.bill; note("note", "🤝 합의로 깽값 " + won(S.bill) + "을 전액 돌려받았다!"); }
+    else if (sc === 1) { S.cost -= S.bill / 2; note("note", "🤝 깽값 " + won(S.bill / 2) + "을 돌려받았다."); }
+    S.bill = 0;
+  } else if (stage === 3 && p.i === 4 && sc === 0) {
+    S.cost += 800000; S.bill = 800000; S.force = 11;
+    note("note", "👊 현피 발발! 멱살잡이 끝에 경찰이 출동했다. 깽값 " + won(800000) + " 지출…\n박 사장이 진단서를 들고 깽값을 청구해 왔다!");
+  }
   meters(); await sleep(700);
   for (const [th, amt] of PHASE) if (S.g <= th && !S.done["p"+th]) { S.done["p"+th] = 1; note("note", amt); }
   for (const [th, amt] of PAY) if (S.g <= th && !S.done[th]) {
-    S.done[th] = 1; S.paid += amt; note("pay", "💸 민수가 " + won(amt) + "을 보냈다"); meters(); await sleep(600);
+    S.done[th] = 1; S.paid += amt; note("pay", stage === 3 ? "🏦 회수된 " + won(amt) + "이 입금됐다" : "💸 민수가 " + won(amt) + "을 보냈다"); meters(); await sleep(600);
   }
   if (S.g <= 0) return end(true);
   next();
@@ -370,8 +443,14 @@ function end(win){
   if (win && stage === 1) {
     unlocked = true; $("back").classList.add("alert");
     R = ["💸 " + won(TOTAL) + " 완납!", (S.t <= 12 ? S.t + "번 만에 전액 회수. 민수가 이렇게 빨리 무너질 줄이야." : S.t + "번 만에 전액 회수. 끈질기게 버틴 민수를 결국 꺾었다.") + "\n\n그런데… 위쪽에 안 읽은 메시지 3개가 와 있다. 눌러 보자."];
+  } else if (win && stage === 2) {
+    unlocked3 = true; $("bd").style.display = ""; $("bd").textContent = "1"; $("back").classList.add("alert");
+    R = ["🏆 " + won(TOTAL) + " 완납!", S.t + "번 만에 태호까지 무너뜨렸다. 당신은 전설의 채권추심러.\n\n그런데… 위쪽에 새 메시지 1개가 와 있다. 이번엔 금액이 다르다. 눌러 보자."];
   } else if (win) {
-    R = ["🏆 " + won(TOTAL) + " 완납!", S.t + "번 만에 태호까지 무너뜨렸다. 당신은 전설의 채권추심러."];
+    S.paid += 10000000; meters(); note("pay", "🤝 합의서 서명! 위자료 " + won(10000000) + " 추가");
+    R = ["🏆 합의 성사! " + won(S.paid), "원금 " + won(10000000) + " + 위자료 " + won(10000000) + ". 박 사장이 합의서에 서명했다.\n지출한 비용 " + won(S.cost) + " → 순이익 " + won(S.paid - S.cost) + ".\n법대로 하니 이렇게 행복하다. 😭"];
+  } else if (stage === 3) {
+    R = ["📆 “소송은 길게 갑니다”", "기회를 다 썼다. 회수한 돈 " + won(S.paid) + ", 지출한 비용 " + won(S.cost) + ". 법정은 아직 멀다…"];
   } else {
     R = ["📆 “다음 달에 줄게”", S.paid ? "기회를 다 썼다. " + won(S.paid) + "은 받았지만 " + won(left) + "이 남았다. 민수는 이번에도 웃고 있다." : "기회를 다 썼다. 한 푼도 못 받았다. 민수는 이번에도 웃고 있다."];
   }
@@ -381,7 +460,11 @@ function end(win){
   d.children[2].onclick = start;
   $("chat").appendChild(d); $("chat").scrollTop = 1e6;
 }
-$("back").onclick = () => { if (unlocked && stage === 1 && !busy) { stage = 2; start(); } };
+$("back").onclick = () => {
+  if (busy) return;
+  if (stage === 1 && unlocked) { stage = 2; start(); }
+  else if (stage === 2 && unlocked3) { stage = 3; start(); }
+};
 $("chat").style.whiteSpace = "pre-line";
 start();
 </script>
