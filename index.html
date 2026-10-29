@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>그 돈 언제 줄래</title>
+<style>
+:root{--blue:#0b84fe;--gray:#e9e9eb;--line:#d1d1d6;--sub:#8e8e93;--red:#ff453a;--green:#34c759;--amber:#ffb300}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:#d8dbe2;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:#000;display:flex;justify-content:center;align-items:center;-webkit-font-smoothing:antialiased}
+.phone{width:100%;max-width:410px;height:100dvh;background:#fff;display:flex;flex-direction:column;overflow:hidden;padding-top:env(safe-area-inset-top)}
+@media(min-width:520px){.phone{height:min(860px,96dvh);border-radius:40px;box-shadow:0 0 0 10px #111,0 20px 60px rgba(0,0,0,.35)}}
+.nav{display:flex;align-items:flex-start;justify-content:space-between;padding:10px 14px 6px;background:rgba(246,246,248,.95);border-bottom:.5px solid var(--line)}
+.back{color:var(--blue);font-size:17px;width:60px;padding-top:6px}
+.who{display:flex;flex-direction:column;align-items:center}
+.av{width:44px;height:44px;border-radius:50%;background:linear-gradient(#a5acb8,#7d8594);color:#fff;font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.nm{font-size:11.5px;margin-top:3px}
+.nm i{color:var(--sub);font-style:normal}
+.sp{width:60px}
+.hud{padding:8px 14px 9px;background:#f6f6f8;border-bottom:.5px solid var(--line)}
+.top{display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-bottom:6px}
+.top b{color:#000;font-weight:600}
+.ms{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.m span{font-size:11px;color:var(--sub);display:flex;justify-content:space-between}
+.bar{height:5px;border-radius:3px;background:#dcdce0;margin-top:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;border-radius:3px;transition:width .5s}
+#chat{flex:1;overflow-y:auto;padding:12px 12px 8px;display:flex;flex-direction:column;gap:2px;background:#fff}
+.time{align-self:center;font-size:11px;color:var(--sub);margin:6px 0 8px;text-align:center;line-height:1.4}
+.b{position:relative;max-width:75%;padding:7px 13px;border-radius:18px;font-size:16.5px;line-height:1.3;margin-top:5px;word-break:keep-all;overflow-wrap:anywhere;animation:pop .18s ease-out}
+.b.g{margin-top:1px}
+.me{align-self:flex-end;background:var(--blue);color:#fff}
+.them{align-self:flex-start;background:var(--gray)}
+.tail::before,.tail::after{content:"";position:absolute;bottom:0}
+.me.tail::before{right:-7px;width:20px;height:18px;background:var(--blue);border-bottom-left-radius:16px 14px}
+.me.tail::after{right:-10px;width:10px;height:20px;background:#fff;border-bottom-left-radius:10px}
+.them.tail::before{left:-7px;width:20px;height:18px;background:var(--gray);border-bottom-right-radius:16px 14px}
+.them.tail::after{left:-10px;width:10px;height:20px;background:#fff;border-bottom-right-radius:10px}
+.tb{position:absolute;top:-13px;left:-12px;width:27px;height:27px;border-radius:50%;background:var(--gray);border:2px solid #fff;font-size:13px;display:flex;align-items:center;justify-content:center;animation:pop .25s ease-out}
+.st{align-self:flex-end;font-size:11px;color:var(--sub);margin:3px 3px 0 0;font-weight:500}
+.note{align-self:center;font-size:12px;color:var(--sub);margin:8px 20px;text-align:center;line-height:1.4}
+.pay{align-self:center;margin:8px 0;padding:8px 16px;border-radius:16px;background:#e6f8ec;color:#17803a;font-size:14px;font-weight:700;animation:pop .25s ease-out}
+.b.img{padding:0;background:none;border-radius:18px;max-width:none}
+.b.img::before,.b.img::after{display:none}
+.shot{width:236px;background:#fff;color:#111;font-size:11px;line-height:1.4;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.16);text-align:left;white-space:normal}
+.sb{display:flex;justify-content:space-between;padding:7px 12px 4px;font-size:10px;font-weight:700;background:inherit}
+.bh{background:#0f6b4f;color:#fff;padding:8px 12px 10px}
+.bh small{display:block;font-size:10px;opacity:.8}
+.bh b{font-size:14px}
+.row{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border-bottom:1px solid #eee}
+.row .a{text-align:right;font-weight:700;white-space:nowrap}
+.row.hl{background:#fff4bf}
+.row small{display:block;color:#777;font-weight:400;font-size:10px}
+.memo{padding:6px 12px 10px;color:#c92a2a;font-size:10.5px;font-weight:700}
+.empty{padding:26px 12px 30px;text-align:center;color:#777}
+.cb{background:#b9cde0;padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px}
+.cb .t{font-weight:700;text-align:center;padding:4px 0 2px;font-size:12px}
+.cd{align-self:center;font-size:9.5px;color:#fff;background:rgba(0,0,0,.28);padding:2px 9px;border-radius:9px;margin:3px 0}
+.cm{max-width:80%;padding:5px 9px;border-radius:10px;font-size:12px;background:#fff;align-self:flex-start}
+.cm.m{align-self:flex-end;background:#fee500}
+.sn{background:linear-gradient(165deg,#20243a,#6b2e58 60%,#e07a5f);color:#fff;padding-bottom:12px}
+.sn .u{display:flex;align-items:center;gap:7px;padding:4px 12px 8px;font-size:11px}
+.sn .p{width:24px;height:24px;border-radius:50%;background:#ffd166;color:#222;font-weight:700;display:flex;align-items:center;justify-content:center}
+.sn .big{font-size:64px;text-align:center;padding:14px 0 4px}
+.sn .cap{text-align:center;font-weight:700;font-size:14px;padding:0 12px}
+.sn .loc{text-align:center;font-size:10px;opacity:.85;margin-top:6px}
+.dots{display:flex;gap:4px;padding:13px 14px}
+.dots span{width:8px;height:8px;border-radius:50%;background:#a5a5ab;animation:blink 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+.card{align-self:center;width:92%;margin:14px 0;background:#f2f2f7;border-radius:20px;padding:18px 16px 16px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,.1)}
+.card h2{font-size:21px;font-weight:700;margin-bottom:6px}
+.card p{font-size:14.5px;line-height:1.5;color:#3c3c43;margin-bottom:14px}
+.card button{background:var(--blue);color:#fff;border:0;border-radius:20px;padding:10px 22px;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;background:#f6f6f8;border-top:.5px solid var(--line)}
+.chips button{flex:1 1 auto;border:0;background:#fff;border-radius:8px;padding:9px 10px;font:inherit;font-size:14.5px;box-shadow:0 1px 0 rgba(0,0,0,.28);cursor:pointer;white-space:nowrap}
+.chips button.on{background:var(--blue);color:#fff}
+.chips button:disabled{opacity:.4}
+.inp{display:flex;align-items:center;gap:8px;padding:6px 10px calc(10px + env(safe-area-inset-bottom));background:#f6f6f8}
+.plus{width:32px;height:32px;border-radius:50%;background:#e1e1e6;color:#6c6c70;font-size:22px;display:flex;align-items:center;justify-content:center;flex:none}
+.field{flex:1;min-height:34px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:6px 6px 6px 13px;display:flex;align-items:center;gap:6px}
+#txt{flex:1;font-size:16px;color:#c0c0c5;line-height:1.3}
+#txt.f{color:#000}
+#send{width:26px;height:26px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;flex:none;visibility:hidden}
+#send.on{visibility:visible}
+button:focus-visible{outline:3px solid #ff9f0a;outline-offset:2px}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+@keyframes blink{50%{opacity:.3}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="nav">
+    <div class="back">‹ 3</div>
+    <div class="who"><div class="av">민</div><div class="nm">민수 <i>›</i></div></div>
+    <div class="sp"></div>
+  </div>
+  <div class="hud">
+    <div class="top"><b>그 돈 언제 줄래 · 500,000원</b><span id="turn"></span></div>
+    <div class="ms">
+      <div class="m"><span>민수 버티기<b id="gv"></b></span><div class="bar"><i id="g" style="background:var(--red)"></i></div></div>
+      <div class="m"><span>받은 돈<b id="fv"></b></span><div class="bar"><i id="f" style="width:0;background:var(--green)"></i></div></div>
+    </div>
+  </div>
+  <div id="chat" aria-live="polite"></div>
+  <div class="chips" id="chips"></div>
+  <div class="inp">
+    <div class="plus">+</div>
+    <div class="field"><div id="txt">iMessage</div><button id="send" aria-label="보내기">↑</button></div>
+  </div>
+</div>
+
+<script>
+const MAX = 20, TOTAL = 500000;
+const PAY = [[80,50000],[60,80000],[40,120000],[20,120000],[0,130000]];
+const PHASE = [[70,"민수가 슬슬 초조해졌다."],[40,"민수의 핑계가 바닥나고 있다."],[15,"민수가 마지막 발악을 한다."]];
+const T = [
+  {ic:"💬", n:"정중하게", m:["민수야~ 잘 지내? 그 50만 원 언제쯤 가능할까?","혹시 이번 주 안에 보내줄 수 있어? 나도 좀 급해서 ㅎㅎ"]},
+  {ic:"📸", n:"캡처 들이밀기", m:["이거 2년 전 추석 날짜 맞지?","증거는 이거고. 할 말 있어?","내가 이거 다 갖고 있다 ㅎㅎ"]},
+  {ic:"😢", n:"감정 호소", m:["나 요즘 진짜 힘들어서 그래… 그 돈이 급해 ㅠㅠ","월세가 밀렸어… 나 좀 도와줘 ㅠㅠ"]},
+  {ic:"👥", n:"공통친구 소환", m:["아 어제 지훈이 만났는데 네 얘기 나오더라? 😊","동창 단톡방에 물어볼까? 다들 궁금해하던데 ㅎㅎ"]},
+  {ic:"⚖️", n:"최후통첩", m:["금요일까지 입금 안 되면 내용증명 보낸다.","오늘 6시까지. 그 뒤엔 나도 어쩔 수 없다."]},
+  {ic:"🤫", n:"여친한테 꼰지르기", m:["윤서 인스타 아이디 뭐였지? 팔로우하려고~ 😊","(윤서에게 DM) 안녕하세요~ 민수 친구인데요, 혹시 민수가 돈 얘기 한 적 있어요?"]},
+  {ic:"🎭", n:"똑같이 거짓말하기", m:["아 그래? 나도 엄마가 입원하셔서 돈이 없어…","나도 방금 너한테 보냈는데? 확인해봐 ㅇㅇ","나도 앱 오류로 이체가 안 돼 ㅠㅠ 한도 걸렸어"]}
+];
+// s: [정중, 캡처, 감정, 공통친구, 최후통첩, 여친, 거짓말] 효과 (2 굉장함 / 1 보통 / 0 역효과)
+const E = [
+  {sys:"민수가 메시지를 읽었지만 답이 없다.", s:[1,1,0,2,0,1,0],
+   r:["갑자기 답장이 왔다. 아 미안 ㅋㅋ 폰 잃어버렸었어","ㅇㅋ 알겠어… (3시간 만의 답장)","답이 없다. 오히려 더 깊이 잠수했다."]},
+  {m:["나 요즘 너무 힘들어… 어제도 한숨도 못 잤어 ㅠㅠ","내가 이렇게 사는 거 알면서 꼭 그래야겠어…?"], s:[0,2,0,1,1,1,1],
+   r:["…알겠어. 계좌 줘봐.","힘든 건 알겠는데… 일단 반만 줄게.","나는 더 힘들다고!!"]},
+  {m:["근데 너 그때 내 생일에 밥 안 샀잖아?","야 너도 지난번에 5천 원 안 줬잖아"], s:[2,1,0,0,1,0,0],
+   r:["…아 맞네 내가 할 말이 아니네. 미안.","그건 그거고…","와 진짜 치사하다."]},
+  {m:["다음 달에 꼭 줄게! 진짜 약속!","월급날 지나면 바로 보낼게~ 걱정 마!"], s:[0,1,1,0,2,1,1],
+   r:["…그럼 금요일 오후까지 보낼게.","알았어, 일단 조금 먼저…","다음 달에 줄게~ ㅎㅎ"]},
+  {m:["(민수 인스타에 새 신발 사진이 올라왔다)","(민수 스토리: 🍣 오마카세 후기)"], s:[0,1,1,2,1,2,0], isSys:1,
+   r:["아 그거… 선물 받은 거야!","…(스토리 삭제됨)","내 돈으로 내가 사는 건데?"]},
+  {m:["우리 사이에 돈 얘기를 꼭 해야 돼?","친구끼리 이러는 거 좀 그렇지 않냐…"], s:[1,0,2,1,0,0,0],
+   r:["…아니 그건 아니지. 내가 잘못했네.","그래도 이건 좀 서운하다…","서운하다. 진짜 서운하다. 나 상처받았어."]},
+  {m:["나 진짜 통장에 3천 원밖에 없어 ㅠㅠ","요즘 월급이 반토막이야… 돈이 없어"], s:[1,1,2,0,0,1,2],
+   r:["…나도 마음이 안 좋다. 일단 보낼게.","그래 알겠어, 방법 찾아볼게.","내가 더 힘들다니까?"]},
+  {m:["자꾸 이러면 나 너랑 연 끊는다?","계속 이럴 거면 나 번호 바꾼다"], s:[1,0,1,0,2,2,0],
+   r:["…아 알았어 알았어. 보낼게.","…진짜 그러진 않겠지?","그래? 그럼 그렇게 해. 차단한다."]},
+  {m:["방금 보냈는데? 확인해봐 ㅇㅇ","아 나 이미 보냈어. 네 쪽에서 확인 안 되는 거 아냐?"], s:[0,2,0,1,1,1,2],
+   r:["…아 그게 사실 아직 안 보냈어 ㅎㅎ 지금 바로 보낼게!","은행 쪽 오류일 수도? 내일이면 들어갈걸?","내 쪽엔 분명 보냈다고 뜨는데? 네 통장이 이상한 거 아냐?"]},
+  {m:["송금 한도에 걸렸어 ㅠㅠ 앱이 자꾸 오류가 나","은행 앱이 점검 중이래… 이체가 안 돼"], s:[1,1,0,1,2,0,2],
+   r:["…알았어, 편의점 가서 바로 보낼게.","내일 은행 가서 해볼게… 아마도…","한도가 풀릴 때까지 기다려야 돼 어쩔 수 없어."]},
+  {m:["엄마가 갑자기 입원하셨어… 병원비로 다 썼어","우리 엄마 요즘 많이 편찮으셔서… 돈이 없어"], s:[0,1,1,2,0,2,1],
+   r:["…사실 어머니 괜찮으셔. 제주도 가 계셔. 미안.","그래도 어머니 얘기는 좀 그렇지… 일단 보낼게.","지금 엄마 얘기까지 의심하는 거야? 너무한다."]},
+  {m:["너가 알려준 계좌로 보냈는데 반송됐어","계좌번호가 틀렸던데? 다시 알려줘봐"], s:[1,2,0,0,1,0,2],
+   r:["…내가 은행 이름을 헷갈렸네. 다시 보낼게.","아 그럼 다시 알려줘봐… (또 잠수 준비 중)","네가 잘못 알려준 거잖아. 내 잘못 아니야."]},
+  {m:["사실 너 연락 피한 거 맞아… 창피해서 ㅠㅠ","미안… 진짜 면목이 없다. 근데 돈이 없어 ㅠㅠ"], s:[1,0,2,0,1,0,0],
+   r:["…더는 못 도망가겠다. 일단 보낼게. 진짜 미안.","그 마음은 알겠어. 근데 좀만 더 시간 줘…","창피하니까 그만 말하자. 나 지금 되게 힘들거든?"]}
+];
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rnd = a => a[Math.floor(Math.random() * a.length)];
+const won = n => n.toLocaleString("ko-KR") + "원";
+let S, last, busy, pend, lastB;
+E[3].img = ["chat"]; E[4].img = ["sns"]; E[6].img = ["sns","bank"]; E[8].img = ["empty"];
+E[9].img = ["empty"]; E[10].img = ["chat"]; E[11].img = ["empty","bank"];
+const R2 = {
+  5:["야야야 윤서한테는 말하지 마!! 지금 바로 보낼게!!","…윤서한테는 얘기하지 말아줘. 부탁이야. 일부만 먼저 보낼게.","윤서도 알아. 걔는 내 편이야. 그래서 뭐?"],
+  6:["…어? 너도? 잠깐, 그거 내 핑계잖아. …알았어, 보낼게.","그래? 그럼 서로 사정이 있네… 일단 조금만 보낼게.","ㅋㅋ 그거 내 대사잖아. 거짓말인 거 다 알아."]
+};
+const bar = (c) => '<div class="sb" style="' + (c || '') + '"><span>14:17</span><span>5G ▮▮▮ 87%</span></div>';
+const SHOT = {
+  bank: () => '<div class="shot">' + bar('background:#0f6b4f;color:#fff') + '<div class="bh"><small>새싹뱅크</small><b>거래내역 조회</b></div>'
+    + '<div class="row"><div>입출금통장<small>110-**-482913</small></div><div class="a">1,284,310원</div></div>'
+    + '<div class="row"><div>2024.09.21 08:03<small>편의점 · 체크카드</small></div><div class="a">-4,800원</div></div>'
+    + '<div class="row hl"><div>2024.09.14 13:52<small>민수 · 이체</small></div><div class="a" style="color:#d6336c">-500,000원</div></div>'
+    + '<div class="row"><div>2024.09.12 09:10<small>월급</small></div><div class="a" style="color:#1971c2">+2,310,000원</div></div>'
+    + '<div class="memo">메모: 민수 (월급날 바로 갚는대)</div></div>',
+  chat: () => '<div class="shot">' + bar('background:#b9cde0') + '<div class="cb"><div class="t">민수</div>'
+    + '<div class="cd">2024년 9월 20일 금요일</div><div class="cm m">민수야 그 돈 언제 줘?</div><div class="cm">야 담주에 줄게 ㅇㅇ</div><div class="cm">월급날 바로 줄게!! 걱정 ㄴㄴ 🙏</div>'
+    + '<div class="cd">2025년 3월 2일 일요일</div><div class="cm m">그 돈 아직이야…?</div><div class="cm">아 다음 달에 줄게ㅠㅠ 진짜 약속</div><div class="cm m">그 소리 반년째다</div><div class="cm">ㅋㅋㅋ 진짜야 진짜</div></div></div>',
+  sns: () => '<div class="shot sn">' + bar('') + '<div class="u"><div class="p">민</div><span><b>minsu_daily</b> · 2시간</span></div>'
+    + '<div class="big">🍣</div><div class="cap">오늘은 내 돈으로 오마카세 ✨ #플렉스</div><div class="loc">📍 청담 스시 · ❤️ 128</div></div>',
+  empty: () => '<div class="shot">' + bar('background:#0f6b4f;color:#fff') + '<div class="bh"><small>새싹뱅크</small><b>입금내역 · 오늘</b></div>'
+    + '<div class="empty"><div style="font-size:30px">📭</div><div style="margin-top:6px"><b>조회된 입금내역이 없습니다</b></div><div style="margin-top:4px;font-size:10px">입금액 합계 0원</div></div></div>'
+};
+function pickImg(e){ return rnd(e.img || ["bank","chat"]); }
+function imgBubble(key){
+  if (lastB && lastB.side === "me") lastB.el.classList.remove("tail");
+  const d = document.createElement("div"); d.className = "b me img"; d.innerHTML = SHOT[key]();
+  $("chat").appendChild(d); lastB = {side:"me", el:d}; $("chat").scrollTop = 1e6;
+}
+
+
+function bubble(side, text){
+  const c = $("chat");
+  if (lastB && lastB.side === side) lastB.el.classList.remove("tail");
+  const d = document.createElement("div");
+  d.className = "b " + side + " tail" + (lastB && lastB.side === side ? " g" : "");
+  d.textContent = text; c.appendChild(d); lastB = {side, el:d}; c.scrollTop = 1e6; return d;
+}
+function note(cls, text){ const d = document.createElement("div"); d.className = cls; d.textContent = text; $("chat").appendChild(d); lastB = null; $("chat").scrollTop = 1e6; return d; }
+function meters(){
+  $("g").style.width = Math.max(0, S.g) + "%"; $("gv").textContent = Math.max(0, S.g);
+  $("f").style.width = (S.paid / TOTAL * 100) + "%"; $("fv").textContent = won(S.paid);
+  $("turn").textContent = "남은 기회 " + Math.max(0, MAX - S.t) + "번";
+}
+function chips(on){
+  $("chips").innerHTML = "";
+  T.forEach((t,i)=>{
+    const b = document.createElement("button");
+    b.textContent = t.ic + " " + t.n; b.disabled = !on;
+    b.onclick = () => pick(i, b); $("chips").appendChild(b);
+  });
+}
+function pick(i, btn){
+  if (busy) return;
+  [...$("chips").children].forEach(x => x.classList.remove("on")); btn.classList.add("on");
+  pend = {i, text: rnd(T[i].m), img: i === 1 ? pickImg(S.e) : null};
+  $("txt").textContent = (pend.img ? "🖼️ " : "") + pend.text; $("txt").className = "f"; $("send").className = "on";
+}
+function clearInput(){ pend = null; $("txt").textContent = "iMessage"; $("txt").className = ""; $("send").className = ""; }
+function start(){
+  S = {g:100, paid:0, t:0, lastT:-1, done:{}}; last = -1; busy = false; lastB = null; clearInput();
+  $("chat").innerHTML = "";
+  note("time", "iMessage\n오늘 오전 9:41");
+  note("note", "2년 전 추석, 민수가 “월급날 바로 줄게” 하고 빌려간 500,000원.\n핑계마다 잘 통하는 방법이 다르다. 같은 수만 계속 쓰면 안 먹힌다.");
+  meters(); next();
+}
+function next(){
+  if (S.t >= MAX) return end(false);
+  let i; do { i = Math.floor(Math.random() * E.length) } while (i === last);
+  last = i; S.e = E[i];
+  if (S.e.sys) note("note", S.e.sys);
+  else if (S.e.isSys) note("note", rnd(S.e.m));
+  else bubble("them", rnd(S.e.m));
+  busy = false; chips(true); meters();
+}
+$("send").onclick = async function(){
+  if (busy || !pend) return;
+  busy = true; const p = pend; chips(false); clearInput();
+  if (p.img) imgBubble(p.img);
+  const my = bubble("me", p.text);
+  document.querySelectorAll(".st").forEach(x => x.remove());
+  const st = note("st", "전달됨"); lastB = {side:"me", el:my};
+  await sleep(700); st.textContent = "읽음";
+  await sleep(500);
+  const dots = bubble("them", ""); dots.classList.add("dots"); dots.innerHTML = "<span></span><span></span><span></span>";
+  await sleep(1000); dots.remove(); lastB = {side:"me", el:my};
+  let sc = S.e.s[p.i];
+  const rep = p.i === S.lastT; if (rep) sc = Math.max(0, sc - 1);
+  S.lastT = p.i; S.t++;
+  S.g = Math.min(100, Math.max(0, S.g + [5,-4,-10][sc]));
+  const tb = document.createElement("div"); tb.className = "tb"; tb.textContent = ["👎","👍","‼️"][sc]; my.appendChild(tb);
+  bubble("them", (R2[p.i] || S.e.r)[2 - sc]);
+  note("note", rep ? "같은 수를 또 썼다. 민수가 눈치챘다." : ["역효과… 민수가 기운을 되찾았다.","먹혔다!","효과가 굉장했다!"][sc]);
+  meters(); await sleep(700);
+  for (const [th, amt] of PHASE) if (S.g <= th && !S.done["p"+th]) { S.done["p"+th] = 1; note("note", amt); }
+  for (const [th, amt] of PAY) if (S.g <= th && !S.done[th]) {
+    S.done[th] = 1; S.paid += amt; note("pay", "💸 민수가 " + won(amt) + "을 보냈다"); meters(); await sleep(600);
+  }
+  if (S.g <= 0) return end(true);
+  next();
+};
+function end(win){
+  chips(false);
+  const left = TOTAL - S.paid;
+  const R = win
+    ? ["💸 500,000원 완납!", S.t <= 12 ? S.t + "번 만에 전액 회수. 민수가 이렇게 빨리 무너질 줄이야." : S.t + "번 만에 전액 회수. 끈질기게 버틴 민수를 결국 꺾었다."]
+    : ["📆 “다음 달에 줄게”", S.paid ? "기회를 다 썼다. " + won(S.paid) + "은 받았지만 " + won(left) + "이 남았다. 민수는 이번에도 웃고 있다." : "기회를 다 썼다. 한 푼도 못 받았다. 민수는 이번에도 웃고 있다."];
+  const d = document.createElement("div"); d.className = "card";
+  d.innerHTML = "<h2></h2><p></p><button>다시 도전하기</button>";
+  d.children[0].textContent = R[0]; d.children[1].textContent = R[1];
+  d.children[2].onclick = start;
+  $("chat").appendChild(d); $("chat").scrollTop = 1e6;
+}
+$("chat").style.whiteSpace = "pre-line";
+start();
+</script>
+</body>
+</html>
