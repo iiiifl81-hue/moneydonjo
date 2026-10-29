@@ -64,6 +64,13 @@ body{background:#d8dbe2;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Tex
 .sn .big{font-size:64px;text-align:center;padding:14px 0 4px}
 .sn .cap{text-align:center;font-weight:700;font-size:14px;padding:0 12px}
 .sn .loc{text-align:center;font-size:10px;opacity:.85;margin-top:6px}
+.back{border:0;background:none;text-align:left;font:inherit;font-size:17px;cursor:default}
+.bd{display:inline-block;background:#ff3b30;color:#fff;border-radius:10px;padding:0 7px;font-size:13px;font-weight:700;line-height:19px}
+.back.alert{cursor:pointer}
+.back.alert .bd{animation:pulse 1s infinite}
+.note.hint{background:#fff4bf;color:#7a5a00;padding:6px 12px;border-radius:12px;font-weight:600}
+.chips button.hint{flex:1 1 100%;background:#fff4bf;color:#7a5a00;font-weight:600}
+@keyframes pulse{50%{transform:scale(1.3)}}
 .dots{display:flex;gap:4px;padding:13px 14px}
 .dots span{width:8px;height:8px;border-radius:50%;background:#a5a5ab;animation:blink 1.2s infinite}
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
@@ -91,14 +98,14 @@ button:focus-visible{outline:3px solid #ff9f0a;outline-offset:2px}
 <body>
 <div class="phone">
   <div class="nav">
-    <div class="back">‹ 3</div>
-    <div class="who"><div class="av">민</div><div class="nm">민수 <i>›</i></div></div>
+    <button class="back" id="back" aria-label="안 읽은 메시지 3개">‹ <span class="bd" id="bd">3</span></button>
+    <div class="who"><div class="av" id="av">민</div><div class="nm" id="nm">민수 <i>›</i></div></div>
     <div class="sp"></div>
   </div>
   <div class="hud">
-    <div class="top"><b>그 돈 언제 줄래 · 500,000원</b><span id="turn"></span></div>
+    <div class="top"><b id="ttl">그 돈 언제 줄래 · 500,000원</b><span id="turn"></span></div>
     <div class="ms">
-      <div class="m"><span>민수 버티기<b id="gv"></b></span><div class="bar"><i id="g" style="background:var(--red)"></i></div></div>
+      <div class="m"><span><em id="gl" style="font-style:normal">민수 버티기</em><b id="gv"></b></span><div class="bar"><i id="g" style="background:var(--red)"></i></div></div>
       <div class="m"><span>받은 돈<b id="fv"></b></span><div class="bar"><i id="f" style="width:0;background:var(--green)"></i></div></div>
     </div>
   </div>
@@ -111,8 +118,11 @@ button:focus-visible{outline:3px solid #ff9f0a;outline-offset:2px}
 </div>
 
 <script>
-const MAX = 24, TOTAL = 500000;
-const PAY = [[90,50000],[80,50000],[70,50000],[60,50000],[50,50000],[40,50000],[30,50000],[20,50000],[10,50000],[0,50000]];
+let MAX = 24, TOTAL = 500000, PAY = [], stage = 1, unlocked = false, NM = "민수", GF = "윤서", HANDLE = "minsu_daily";
+const CFG = {
+  1:{nm:"민수", gf:"윤서", handle:"minsu_daily", total:500000, max:24, hints:5, d:[3,-8,-16]},
+  2:{nm:"태호", gf:"다은", handle:"taeho_biz", total:1000000, max:50, hints:3, d:[6,-5,-11]}
+};
 const PHASE = [[70,"민수가 슬슬 초조해졌다."],[40,"민수의 핑계가 바닥나고 있다."],[15,"민수가 마지막 발악을 한다."]];
 const T = [
   {ic:"💬", n:"정중하게", m:["민수야~ 잘 지내? 그 50만 원 언제쯤 가능할까?","혹시 이번 주 안에 보내줄 수 있어? 나도 좀 급해서 ㅎㅎ"]},
@@ -157,12 +167,39 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const rnd = a => a[Math.floor(Math.random() * a.length)];
 const won = n => n.toLocaleString("ko-KR") + "원";
 let S, last, busy, pend, lastB;
-E[3].img = ["chat"]; E[4].img = ["sns"]; E[6].img = ["sns","bank"]; E[8].img = ["empty"];
+E.push(
+  {m:["코인 폭락해서 오늘 청산당했어… 나 망했다","어제 코인 다 날렸어 ㅠㅠ 진짜 죽고 싶다"], s:[0,1,2,0,0,0,2],
+   r:["…너한테까지 이러긴 싫은데, 일단 보낼게.","그래도 어쩔 수 없잖아… 좀만 기다려줘.","나 지금 제정신 아니야. 건들지 마."]},
+  {m:["사업 곧 터져. 투자자 미팅 중이라 지금은 못 줘. 두 배로 갚을게","이번 달만 지나면 대박이야. 두 배로 줄 테니까 기다려"], s:[0,2,0,1,2,1,1],
+   r:["…알았어, 일단 날짜 정해서 보낼게.","그럼 반만 먼저 보낼게. 나머진 대박 나면.","두 배라니까?? 왜 이렇게 못 믿어."]},
+  {m:["선배한테 돈 얘기하는 거 예의 아니지 않냐?","후배가 선배한테 이러는 거 좀 그렇다"], s:[2,1,0,2,0,1,0],
+   r:["…아 그래. 선배가 미안하다. 보낼게.","그래도 선배는 선배지… 일단 조금만.","요즘 애들은 예의가 없어."]}
+);
+E[3].img = ["chat"]; E[4].img = ["sns"]; E[6].img = ["sns","bank"]; E[8].img = ["empty"]; E[13].img = ["bank"]; E[14].img = ["chat"]; E[15].img = ["chat"];
 E[9].img = ["empty"]; E[10].img = ["chat"]; E[11].img = ["empty","bank"];
 const R2 = {
   5:["야야야 윤서한테는 말하지 마!! 지금 바로 보낼게!!","…윤서한테는 얘기하지 말아줘. 부탁이야. 일부만 먼저 보낼게.","윤서도 알아. 걔는 내 편이야. 그래서 뭐?"],
   6:["…어? 너도? 잠깐, 그거 내 핑계잖아. …알았어, 보낼게.","그래? 그럼 서로 사정이 있네… 일단 조금만 보낼게.","ㅋㅋ 그거 내 대사잖아. 거짓말인 거 다 알아."]
 };
+const H = [
+  "읽씹하는 사람은 본인보다 주변의 눈이 무서울 거야.",
+  "눈물에는 감정으로 맞서지 말자. 눈물이 마르는 건 증거 앞이야.",
+  "역공에 같이 싸우면 지는 거야. 말투가 덜 싸우는 쪽이 이겨.",
+  "다음에라는 말엔 날짜가 없어. 날짜를 박아 줘야지.",
+  "SNS에 올린 건 누구나 볼 수 있어. 누가 보면 제일 곤란할까?",
+  "마음이 약해지는 말엔 마음으로 풀어야 풀려.",
+  "가난 이야기엔 같은 이야기로 받아쳐도 되고, 마음을 건드려도 돼.",
+  "큰소리엔 더 큰소리가 먹혀. 아니면 더 무서운 사람의 눈.",
+  "보냈다고 우긴다면 확인 가능한 기록을 보여주면 돼.",
+  "기술적인 문제라면 기한이 확실히 있으면 해결될 걸.",
+  "가족 얘기가 나오면 가까운 사람에게 확인하는 게 빠르겠지.",
+  "남 탓엔 기록이 있어야 해. 아니면 똑같이 되받아쳐 봐.",
+  "창피하다고 말하는 사람한텐 같은 감정으로 말을 풀어 보자.",
+  "같은 처지임을 들려주거나, 감정에 기대는 게 좋겠어.",
+  "큰소리를 칠 땐 기록이나 기한으로 묶어 줘.",
+  "정중함이 가장 무서운 반격이 될 수도. 제3자도 나쁘지 않고."
+];
+const tx = t => t.split("윤서").join(GF).split("민수").join(NM);
 const bar = (c) => '<div class="sb" style="' + (c || '') + '"><span>14:17</span><span>5G ▮▮▮ 87%</span></div>';
 const SHOT = {
   bank: () => '<div class="shot">' + bar('background:#0f6b4f;color:#fff') + '<div class="bh"><small>새싹뱅크</small><b>거래내역 조회</b></div>'
@@ -182,7 +219,7 @@ const SHOT = {
 function pickImg(e){ return rnd(e.img || ["bank","chat"]); }
 function imgBubble(key){
   if (lastB && lastB.side === "me") lastB.el.classList.remove("tail");
-  const d = document.createElement("div"); d.className = "b me img"; d.innerHTML = SHOT[key]();
+  const d = document.createElement("div"); d.className = "b me img"; d.innerHTML = SHOT[key]().split("민수").join(NM).split("minsu_daily").join(HANDLE).replace('class="p">민<', 'class="p">' + NM[0] + '<');
   $("chat").appendChild(d); lastB = {side:"me", el:d}; $("chat").scrollTop = 1e6;
 }
 
@@ -192,9 +229,9 @@ function bubble(side, text){
   if (lastB && lastB.side === side) lastB.el.classList.remove("tail");
   const d = document.createElement("div");
   d.className = "b " + side + " tail" + (lastB && lastB.side === side ? " g" : "");
-  d.textContent = text; c.appendChild(d); lastB = {side, el:d}; c.scrollTop = 1e6; return d;
+  d.textContent = tx(text); c.appendChild(d); lastB = {side, el:d}; c.scrollTop = 1e6; return d;
 }
-function note(cls, text){ const d = document.createElement("div"); d.className = cls; d.textContent = text; $("chat").appendChild(d); lastB = null; $("chat").scrollTop = 1e6; return d; }
+function note(cls, text){ const d = document.createElement("div"); d.className = cls; d.textContent = tx(text); $("chat").appendChild(d); lastB = null; $("chat").scrollTop = 1e6; return d; }
 function meters(){
   $("g").style.width = Math.max(0, S.g) + "%"; $("gv").textContent = Math.max(0, S.g);
   $("f").style.width = (S.paid / TOTAL * 100) + "%"; $("fv").textContent = won(S.paid);
@@ -207,25 +244,50 @@ function chips(on){
     b.textContent = t.ic + " " + t.n; b.disabled = !on;
     b.onclick = () => pick(i, b); $("chips").appendChild(b);
   });
+  const h = document.createElement("button"); h.className = "hint"; h.id = "hintBtn";
+  h.textContent = "💡 힌트 (" + (S ? S.hints : 0) + ")";
+  h.disabled = !on || !S || S.hints <= 0 || S.hinted;
+  h.onclick = useHint; $("chips").appendChild(h);
+}
+function useHint(){
+  if (busy || S.hinted || S.hints <= 0) return;
+  S.hints--; S.hinted = true; note("note hint", "💡 " + H[S.ei]);
+  const h = $("hintBtn"); h.textContent = "💡 힌트 (" + S.hints + ")"; h.disabled = true;
 }
 function pick(i, btn){
   if (busy) return;
   [...$("chips").children].forEach(x => x.classList.remove("on")); btn.classList.add("on");
   pend = {i, text: rnd(T[i].m), img: i === 1 ? pickImg(S.e) : null};
-  $("txt").textContent = (pend.img ? "🖼️ " : "") + pend.text; $("txt").className = "f"; $("send").className = "on";
+  $("txt").textContent = (pend.img ? "🖼️ " : "") + tx(pend.text); $("txt").className = "f"; $("send").className = "on";
 }
 function clearInput(){ pend = null; $("txt").textContent = "iMessage"; $("txt").className = ""; $("send").className = ""; }
+function applyStage(){
+  const c = CFG[stage];
+  NM = c.nm; GF = c.gf; HANDLE = c.handle; MAX = c.max; TOTAL = c.total;
+  PAY = Array.from({length:10}, (_, k) => [90 - 10 * k, TOTAL / 10]);
+  $("av").textContent = NM[0]; $("nm").innerHTML = NM + " <i>›</i>";
+  $("gl").textContent = NM + " 버티기"; $("ttl").textContent = "그 돈 언제 줄래 · " + won(TOTAL);
+  $("bd").style.display = stage === 1 ? "" : "none";
+  $("back").classList.toggle("alert", unlocked && stage === 1);
+}
 function start(){
-  S = {g:100, paid:0, t:0, lastT:-1, done:{}}; last = -1; busy = false; lastB = null; clearInput();
+  applyStage();
+  S = {g:100, paid:0, t:0, lastT:-1, done:{}, hints:CFG[stage].hints, hinted:false}; last = -1; busy = false; lastB = null; clearInput();
   $("chat").innerHTML = "";
-  note("time", "iMessage\n오늘 오전 9:41");
-  note("note", "2년 전 추석, 민수가 “월급날 바로 줄게” 하고 빌려간 500,000원.\n핑계마다 잘 통하는 방법이 다르다. 같은 수만 계속 쓰면 안 먹힌다.");
+  if (stage === 1) {
+    note("time", "iMessage\n오늘 오전 9:41");
+    note("note", "2년 전 추석, 민수가 “월급날 바로 줄게” 하고 빌려간 " + won(TOTAL) + ".\n핑계마다 잘 통하는 방법이 다르다. 같은 수만 계속 쓰면 안 먹힌다.\n막히면 💡힌트를 써 보자.");
+  } else {
+    note("time", "iMessage\n오늘 오후 7:12");
+    note("note", "3년 전, 대학 선배 태호가 “사업 대박 나면 두 배로 갚는다”며 빌려간 " + won(TOTAL) + ".\n이번엔 훨씬 끈질기다. 기회는 " + MAX + "번.");
+    bubble("them", "야 오랜만이다~"); bubble("them", "너 민수한테 돈 받아냈다며? ㅋㅋ"); bubble("them", "나한테도 그 소리 하려고 그러냐");
+  }
   meters(); next();
 }
 function next(){
   if (S.t >= MAX) return end(false);
-  let i; do { i = Math.floor(Math.random() * E.length) } while (i === last);
-  last = i; S.e = E[i];
+  const n = stage === 2 ? E.length : 13; let i; do { i = Math.floor(Math.random() * n) } while (i === last);
+  last = i; S.e = E[i]; S.ei = i; S.hinted = false;
   if (S.e.sys) note("note", S.e.sys);
   else if (S.e.isSys) note("note", rnd(S.e.m));
   else bubble("them", rnd(S.e.m));
@@ -245,7 +307,7 @@ $("send").onclick = async function(){
   let sc = S.e.s[p.i];
   const rep = p.i === S.lastT; if (rep) sc = Math.max(0, sc - 1);
   S.lastT = p.i; S.t++;
-  S.g = Math.min(100, Math.max(0, S.g + [3,-8,-16][sc]));
+  S.g = Math.min(100, Math.max(0, S.g + CFG[stage].d[sc]));
   const tb = document.createElement("div"); tb.className = "tb"; tb.textContent = ["👎","👍","‼️"][sc]; my.appendChild(tb);
   bubble("them", (R2[p.i] || S.e.r)[2 - sc]);
   note("note", rep ? "같은 수를 또 썼다. 민수가 눈치챘다." : ["역효과… 민수가 기운을 되찾았다.","먹혔다!","효과가 굉장했다!"][sc]);
@@ -258,17 +320,24 @@ $("send").onclick = async function(){
   next();
 };
 function end(win){
-  chips(false);
+  busy = false; chips(false);
   const left = TOTAL - S.paid;
-  const R = win
-    ? ["💸 500,000원 완납!", S.t <= 12 ? S.t + "번 만에 전액 회수. 민수가 이렇게 빨리 무너질 줄이야." : S.t + "번 만에 전액 회수. 끈질기게 버틴 민수를 결국 꺾었다."]
-    : ["📆 “다음 달에 줄게”", S.paid ? "기회를 다 썼다. " + won(S.paid) + "은 받았지만 " + won(left) + "이 남았다. 민수는 이번에도 웃고 있다." : "기회를 다 썼다. 한 푼도 못 받았다. 민수는 이번에도 웃고 있다."];
+  let R;
+  if (win && stage === 1) {
+    unlocked = true; $("back").classList.add("alert");
+    R = ["💸 " + won(TOTAL) + " 완납!", (S.t <= 12 ? S.t + "번 만에 전액 회수. 민수가 이렇게 빨리 무너질 줄이야." : S.t + "번 만에 전액 회수. 끈질기게 버틴 민수를 결국 꺾었다.") + "\n\n그런데… 위쪽에 안 읽은 메시지 3개가 와 있다. 눌러 보자."];
+  } else if (win) {
+    R = ["🏆 " + won(TOTAL) + " 완납!", S.t + "번 만에 태호까지 무너뜨렸다. 당신은 전설의 채권추심러."];
+  } else {
+    R = ["📆 “다음 달에 줄게”", S.paid ? "기회를 다 썼다. " + won(S.paid) + "은 받았지만 " + won(left) + "이 남았다. 민수는 이번에도 웃고 있다." : "기회를 다 썼다. 한 푼도 못 받았다. 민수는 이번에도 웃고 있다."];
+  }
   const d = document.createElement("div"); d.className = "card";
   d.innerHTML = "<h2></h2><p></p><button>다시 도전하기</button>";
-  d.children[0].textContent = R[0]; d.children[1].textContent = R[1];
+  d.children[0].textContent = tx(R[0]); d.children[1].textContent = tx(R[1]);
   d.children[2].onclick = start;
   $("chat").appendChild(d); $("chat").scrollTop = 1e6;
 }
+$("back").onclick = () => { if (unlocked && stage === 1 && !busy) { stage = 2; start(); } };
 $("chat").style.whiteSpace = "pre-line";
 start();
 </script>
