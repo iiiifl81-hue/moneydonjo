@@ -111,8 +111,8 @@ button:focus-visible{outline:3px solid #ff9f0a;outline-offset:2px}
 </div>
 
 <script>
-const MAX = 20, TOTAL = 500000;
-const PAY = [[80,50000],[60,80000],[40,120000],[20,120000],[0,130000]];
+const MAX = 24, TOTAL = 500000;
+const PAY = [[90,50000],[80,50000],[70,50000],[60,50000],[50,50000],[40,50000],[30,50000],[20,50000],[10,50000],[0,50000]];
 const PHASE = [[70,"민수가 슬슬 초조해졌다."],[40,"민수의 핑계가 바닥나고 있다."],[15,"민수가 마지막 발악을 한다."]];
 const T = [
   {ic:"💬", n:"정중하게", m:["민수야~ 잘 지내? 그 50만 원 언제쯤 가능할까?","혹시 이번 주 안에 보내줄 수 있어? 나도 좀 급해서 ㅎㅎ"]},
@@ -245,7 +245,7 @@ $("send").onclick = async function(){
   let sc = S.e.s[p.i];
   const rep = p.i === S.lastT; if (rep) sc = Math.max(0, sc - 1);
   S.lastT = p.i; S.t++;
-  S.g = Math.min(100, Math.max(0, S.g + [5,-4,-10][sc]));
+  S.g = Math.min(100, Math.max(0, S.g + [3,-8,-16][sc]));
   const tb = document.createElement("div"); tb.className = "tb"; tb.textContent = ["👎","👍","‼️"][sc]; my.appendChild(tb);
   bubble("them", (R2[p.i] || S.e.r)[2 - sc]);
   note("note", rep ? "같은 수를 또 썼다. 민수가 눈치챘다." : ["역효과… 민수가 기운을 되찾았다.","먹혔다!","효과가 굉장했다!"][sc]);
