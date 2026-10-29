@@ -13,17 +13,17 @@ body{background:#d8dbe2;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Tex
 @media(min-width:520px){.phone{height:min(860px,96dvh);border-radius:40px;box-shadow:0 0 0 10px #111,0 20px 60px rgba(0,0,0,.35)}}
 
 /* 메인 로비 UI */
-.lobby{display:flex;flex-direction:column;height:100%;background:#f2f2f7;padding:24px 18px;overflow-y:auto}
-.lobby-header{margin:20px 0 24px;text-align:center}
-.lobby-title{font-size:28px;font-weight:800;color:#1c1c1e;letter-spacing:-0.5px}
-.lobby-sub{font-size:14px;color:var(--sub);margin-top:6px}
-.stage-list{display:flex;flex-direction:column;gap:14px}
-.stage-card{background:#fff;border-radius:20px;padding:18px 20px;box-shadow:0 4px 12px rgba(0,0,0,.05);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;border:1.5px solid transparent}
+.lobby{display:flex;flex-direction:column;height:100%;background:#f2f2f7;padding:20px 18px;overflow-y:auto}
+.lobby-header{margin:10px 0 20px;text-align:center}
+.lobby-title{font-size:26px;font-weight:800;color:#1c1c1e;letter-spacing:-0.5px}
+.lobby-sub{font-size:13px;color:var(--sub);margin-top:4px}
+.stage-list{display:flex;flex-direction:column;gap:12px}
+.stage-card{background:#fff;border-radius:18px;padding:16px 18px;box-shadow:0 4px 12px rgba(0,0,0,.05);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;border:1.5px solid transparent}
 .stage-card:active{transform:scale(0.98);background:#f9f9fb}
 .stage-card.cleared{border-color:var(--green)}
-.stage-info h3{font-size:18px;font-weight:700;color:#1c1c1e;display:flex;align-items:center;gap:6px}
-.stage-info p{font-size:13px;color:var(--sub);margin-top:4px}
-.stage-tag{font-size:12px;font-weight:700;padding:4px 10px;border-radius:12px;background:#e5e5ea;color:#3a3a3c}
+.stage-info h3{font-size:17px;font-weight:700;color:#1c1c1e;display:flex;align-items:center;gap:6px}
+.stage-info p{font-size:12.5px;color:var(--sub);margin-top:3px}
+.stage-tag{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:10px;background:#e5e5ea;color:#3a3a3c}
 .stage-card.cleared .stage-tag{background:#e6f8ec;color:#17803a}
 
 /* 게임 영역 UI */
@@ -99,7 +99,7 @@ body{background:#d8dbe2;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Tex
 .card button.sec{background:#e5e5ea;color:#000}
 
 .chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;background:#f6f6f8;border-top:.5px solid var(--line)}
-.chips button{flex:1 1 auto;border:0;background:#fff;border-radius:8px;padding:9px 10px;font:inherit;font-size:14px;box-shadow:0 1px 0 rgba(0,0,0,.28);cursor:pointer;white-space:nowrap}
+.chips button{flex:1 1 auto;border:0;background:#fff;border-radius:8px;padding:9px 10px;font:inherit;font-size:13.5px;box-shadow:0 1px 0 rgba(0,0,0,.28);cursor:pointer;white-space:nowrap}
 .chips button.on{background:var(--blue);color:#fff}
 .chips button:disabled{opacity:.4}
 .inp{display:flex;align-items:center;gap:8px;padding:6px 10px calc(10px + env(safe-area-inset-bottom));background:#f6f6f8}
@@ -127,23 +127,30 @@ body{background:#d8dbe2;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Tex
       <div class="stage-card" id="card-1" onclick="selectStage(1)">
         <div class="stage-info">
           <h3>STAGE 1. 민수 <span style="font-size:13px;color:var(--sub);font-weight:400;">(친구)</span></h3>
-          <p>못 받은 돈: 500,000원 · 기회 24회</p>
+          <p>못 받은 돈: 50만 원 · 기회 24회</p>
         </div>
         <span class="stage-tag" id="tag-1">도전</span>
       </div>
       <div class="stage-card" id="card-2" onclick="selectStage(2)">
         <div class="stage-info">
           <h3>STAGE 2. 태호 <span style="font-size:13px;color:var(--sub);font-weight:400;">(대학 선배)</span></h3>
-          <p>못 받은 돈: 1,000,000원 · 기회 50회</p>
+          <p>못 받은 돈: 100만 원 · 기회 50회</p>
         </div>
         <span class="stage-tag" id="tag-2">도전</span>
       </div>
       <div class="stage-card" id="card-3" onclick="selectStage(3)">
         <div class="stage-info">
           <h3>STAGE 3. 박 사장 <span style="font-size:13px;color:var(--sub);font-weight:400;">(인테리어)</span></h3>
-          <p>못 받은 돈: 10,000,000원 · 기회 50회</p>
+          <p>못 받은 돈: 1,000만 원 · 기회 50회</p>
         </div>
         <span class="stage-tag" id="tag-3">도전</span>
+      </div>
+      <div class="stage-card" id="card-4" onclick="selectStage(4)">
+        <div class="stage-info">
+          <h3>STAGE 4. 마이클 킴 <span style="font-size:13px;color:var(--sub);font-weight:400;">(사기꾼 동업자)</span></h3>
+          <p>못 받은 돈: 1억원 · 기회 60회</p>
+        </div>
+        <span class="stage-tag" id="tag-4">도전</span>
       </div>
     </div>
   </div>
@@ -176,7 +183,8 @@ let MAX = 24, TOTAL = 500000, PAY = [], stage = 1, NM = "민수", GF = "윤서",
 const CFG = {
   1:{nm:"민수", gf:"윤서", handle:"minsu_daily", total:500000, max:24, hints:5, d:[5,-8,-18]},
   2:{nm:"태호", gf:"다은", handle:"taeho_biz", total:1000000, max:50, hints:3, d:[8,-6,-14]},
-  3:{nm:"박 사장", gf:"사모님", handle:"boss_park", total:10000000, max:50, hints:3, d:[6,-5,-12]}
+  3:{nm:"박 사장", gf:"사모님", handle:"boss_park", total:10000000, max:50, hints:3, d:[6,-5,-12]},
+  4:{nm:"마이클 킴", gf:"비서", handle:"michael_global", total:100000000, max:60, hints:3, d:[4,-3,-9]} // 4단계 훨씬 안 깎임 (어려움)
 };
 const PHASE = [[70,"상대가 슬슬 초조해졌다."],[40,"핑계가 바닥나고 있다."],[15,"마지막 발악을 한다."]];
 
@@ -188,6 +196,25 @@ const T = [
   {ic:"⚖️", n:"최후통첩", m:["금요일까지 입금 안 되면 내용증명 보낸다.","오늘 6시까지. 그 뒤엔 나도 어쩔 수 없다."]},
   {ic:"🤫", n:"여친한테 꼰지르기", m:["윤서 인스타 아이디 뭐였지? 팔로우하려고~ 😊","(윤서에게 DM) 안녕하세요~ 민수 친구인데요, 혹시 민수가 돈 얘기 한 적 있어요?"]},
   {ic:"🎭", n:"똑같이 거짓말하기", m:["아 그래? 나도 엄마가 입원하셔서 돈이 없어…","나도 방금 너한테 보냈는데? 확인해봐 ㅇㅇ","나도 앱 오류로 이체가 안 돼 ㅠㅠ 한도 걸렸어"]}
+];
+
+const T3 = [
+  {ic:"📨", n:"변호사 내용증명", img:"notice", m:["변호사 통해 내용증명 발송했습니다. 3일 내 이행 바랍니다.","[내용증명 우편 발송 완료] 수신 확인되는 대로 법적 조치 들어갑니다."]},
+  {ic:"📝", n:"지급명령 신청", img:"order", m:["법원에 지급명령 신청했습니다. 이의신청 안 하면 그대로 확정됩니다."]},
+  {ic:"🔒", n:"재산 가압류", img:"seize", m:["박 사장님 명의 통장, 가압류 신청 들어갑니다. 통장 묶였습니다."]},
+  {ic:"🏛️", n:"민사소송 제기", img:"court", m:["소장 접수했습니다. 첫 변론기일 잡혔어요."]},
+  {ic:"👊", n:"찾아가서 흠씬 패기", m:["사무실 찾아가서 다 엎어버리고 흠씬 때려주겠습니다."]},
+  {ic:"🤝", n:"합의 제안", img:"deal", m:["원금만이라도 깔끔하게 합의하시죠. 오늘 안에요."]}
+];
+
+// 4단계 전용 선택지 (SNS 공론화 포함)
+const T4 = [
+  {ic:"✈️", n:"출국금지 신청", img:"flightDoc", m:["법무부에 긴급 출국금지 신청 넣었습니다. 공항 가셔도 못 나갑니다."]},
+  {ic:"🔍", n:"본명 팩폭하기", m:["김학철 씨, 충남 공주 출신인 거 다 까발리기 전에 돈 부치시죠."]},
+  {ic:"📢", n:"SNS 공론화", img:"snsPost", m:["스타트업 커뮤니티랑 인스타에 사기꾼 김학철(마이클 킴) 실명 폭로문 올렸습니다."]},
+  {ic:"🔒", n:"해외계좌 가압류", img:"seize4", m:["은닉한 가상화폐랑 차명 계좌 전부 가압류 신청 들어갔습니다."]},
+  {ic:"👊", n:"찾아가서 흠씬 패기", m:["지금 오피스텔 앞으로 갑니다. 당장 문 여세요."]},
+  {ic:"🤝", n:"분할상환 합의", img:"deal4", m:["원금 1억, 매달 2천씩 5회 분할 상환 합의서 보냅니다."]}
 ];
 
 const E = [
@@ -212,35 +239,30 @@ const E = [
   {m:["송금 한도에 걸렸어 ㅠㅠ 앱이 자꾸 오류가 나","은행 앱이 점검 중이래… 이체가 안 돼"], s:[1,1,0,1,2,0,2],
    r:["…알았어, 편의점 가서 바로 보낼게.","내일 은행 가 볼게… 아마도…","한도가 풀릴 때까지 기다려야 돼 어쩔 수 없어."]},
   {m:["엄마가 갑자기 입원하셨어… 병원비로 다 썼어","우리 엄마 요즘 많이 편찮으셔서… 돈이 없어"], s:[0,1,1,2,0,2,1],
-   r:["…사실 어머니 괜찮으셔. 제주도 가 계셔. 미안.","그래도 어머니 얘기는 좀 그렇지… 일단 보낼게.","지금 엄마 얘기까지 의심하는 거야? 너무한다."]},
+   r:[["…사실 어머니 괜찮으셔. 제주도 가 계셔. 미안."],["그래도 어머니 얘기는 좀 그렇지… 일단 보낼게."],["지금 엄마 얘기까지 의심하는 거야? 너무한다."]]},
   {m:["너가 알려준 계좌로 보냈는데 반송됐어","계좌번호가 틀렸던데? 다시 알려줘봐"], s:[1,2,0,0,1,0,2],
-   r:["…내가 은행 이름을 헷갈렸네. 다시 보낼게.","아 그럼 다시 알려줘봐… (또 잠수 준비 중)","네가 잘못 알려준 거잖아. 내 잘못 아니야."]},
+   r:[["…내가 은행 이름을 헷갈렸네. 다시 보낼게."],["아 그럼 다시 알려줘봐…"],["네가 잘못 알려준 거라니까."]]},
   {m:["사실 너 연락 피한 거 맞아… 창피해서 ㅠㅠ","미안… 진짜 면목이 없다. 근데 돈이 없어 ㅠㅠ"], s:[1,0,2,0,1,0,0],
-   r:["…더는 못 도망가겠다. 일단 보낼게. 진짜 미안.","그 마음은 알겠어. 근데 좀만 더 시간 줘…","창피하니까 그만 말하자. 나 지금 되게 힘들거든?"]}
-];
-
-const T3 = [
-  {ic:"📨", n:"변호사 내용증명", img:"notice", m:["변호사 통해 내용증명 발송했습니다. 3일 내 이행 바랍니다.","[내용증명 우편 발송 완료] 수신 확인되는 대로 법적 조치 들어갑니다.","법무법인에서 서면 보냈습니다. 답변 기한은 3일입니다."]},
-  {ic:"📝", n:"지급명령 신청", img:"order", m:["법원에 지급명령 신청했습니다. 이의신청 안 하면 그대로 확정됩니다.","전자소송으로 지급명령 접수했어요. 접수번호 받았습니다.","지급명령 들어갑니다. 2주 안에 이의신청 안 하면 끝이에요."]},
-  {ic:"🔒", n:"재산 가압류", img:"seize", m:["박 사장님 명의 통장, 가압류 신청 들어갑니다.","가압류 결정문 받았습니다. 사업장 통장 묶였습니다.","예금채권 가압류 결정 났어요. 월급날 기대하세요."]},
-  {ic:"🏛️", n:"민사소송 제기", img:"court", m:["소장 접수했습니다. 첫 변론기일 잡혔어요.","원금에 지연이자까지 청구하는 소 제기했습니다.","법정에서 뵙겠습니다. 증거는 다 준비돼 있어요."]},
-  {ic:"👊", n:"찾아가서 흠씬 패기", m:["사무실 찾아가서 다 엎어버리고 흠씬 때려주겠습니다.","지금 옥상으로 따라 나오시죠. 참는 데도 한계가 있습니다."]},
-  {ic:"🤝", n:"합의 제안", img:"deal", m:["원금만이라도 깔끔하게 합의하시죠. 오늘 안에요.","합의서 초안 보냅니다. 서명만 하시면 깔끔하게 끝납니다.","서로 좋게 끝냅시다. 원금만 회수해도 만족합니다."]}
+   r:[["…더는 못 도망가겠다. 일단 보낼게. 진짜 미안."],["그 마음은 알겠어. 근데 좀만 더 시간 줘…"],["창피하니까 그만 말하자."]]}
 ];
 
 const E3 = [
-  {m:["차용증 있어? 없잖아. 증거 있냐?","내가 언제 빌렸다고 그래? 종이 한 장 없는데?"], s:[1,2,0,1,0,0],
-   r:[["…이체내역이랑 카톡 서류로 냈다고? 흠… 철저하네.","지급명령 접수됐다고?? 이의신청 안 하면 끝인데…"],["증거야 있겠지, 근데 그게 끝은 아니야.","음… 일단 서류는 받았다."],["증거 없는 거 맞잖아. 나는 모르는 일이야."]]},
-  {m:["그건 빌린 게 아니라 투자받은 거라니까?","야 그건 사업 투자금이었어. 돈 날렸으면 같이 날린 거지."], s:[0,1,0,2,0,1],
-   r:[["투자? 판사님 앞에서 그 소리가 통할까… 법원 가자고?","법정에서 가리자고? 식은땀 나네… 일단 조건 들어볼게."],["투자인지 대여인지 따져보자는 거지? 변호사랑 상의해 볼게.","음… 서류 확인 좀 하고."],["투자금이라니까? 억지 부리지 마."]]},
-  {m:["나 명의로 된 재산 없어. 받을 수 있으면 받아봐","배 째라 해. 압류할 게 있어야 압류하지?"], s:[1,0,2,1,0,0],
-   r:[["…통장이 묶였다고? 어떻게 알았어?? 사업 통장 어떡해!!","가압류 결정났다고?! 알았어, 일부 보내줄게 좀 풀어줘!"],["그래? 한번 해보든가. (불안해한다)","통장 압류… 조율 좀 하자."],["재산 없다니까? 가져갈 거 하나도 없어."]]},
-  {m:["고소해 봐라. 나 법 쪽 아는 사람 많다","나 아는 변호사 선배 있어. 소송해 봐야 질질 끌어"], s:[2,1,0,1,0,1],
-   r:[["…진짜 소장을 냈다고? 변론기일까지 잡혔어?? 아 이건 좀…","원금에 지연이자까지? 얼마만이라도 먼저 보낼게!"],["소송이야 할 수는 있겠지… 나도 알아보마.","흠… 법원 서류가 올 줄은 몰랐네."],["고소? 해봐. 하나도 안 무섭다."]]},
-  {m:["법으로 가면 우리 사이 끝이야. 그래도 해볼래?","야 법으로 가면 관계는 끝이야 진짜로"], s:[1,0,0,0,0,2],
-   r:[["…그럼 서로 좋게 끝내자. 합의서 어디 있어? 서명할게!","알았어, 일부라도 깔끔하게 보내줄게."],["합의라… 조건 보고 얘기하자.","그래, 적당히 마무리짓자."],["법으로 가자는 사람이 합의는 무슨."]]},
-  {m:["나 지금 해외 출장 중이라 연락이 안 돼","요즘 현장 때문에 정신이 없어."], s:[2,0,0,0,0,1],
-   r:[["내용증명이 회사로 도착했다고…? 이건 답해야겠네.","기록 남았다고? 알았어 일단 보낼게!"],["일단 확인은 했어. 귀국하면 처리할게.","서류는 받았다."],["해외라니까? 나중에 얘기해."]]}
+  {m:["차용증 있어? 없잖아. 증거 있냐?","내가 언제 빌렸다고 그래? 종이 한 장 없는데?"], s:[1,2,0,1,0,0], r:[["…이체내역이랑 서류로 냈다고? 흠…"],["증거야 있겠지."],["모르는 일이야."]]},
+  {m:["그건 빌린 게 아니라 투자받은 거라니까?","야 그건 사업 투자금이었어."], s:[0,1,0,2,0,1], r:[["투자라니 법원 가자고?"],["변호랑 상의해 볼게."],["투자금이야 억지 부리지 마."]]},
+  {m:["나 명의로 된 재산 없어. 받을 수 있으면 받아봐"], s:[1,0,2,1,0,0], r:[["…통장이 묶였다고? 어떡해!!"],["한번 해보든가."],["재산 없다니까?"]] },
+  {m:["고소해 봐라. 나 법 쪽 아는 사람 많다"], s:[2,1,0,1,0,1], r:[["…진짜 소장을 냈다고? 미안하다!"],["소송이야 하겠지."],["고소 해봐라."]]},
+  {m:["법으로 가면 우리 사이 끝이야. 그래도 해볼래?"], s:[1,0,0,0,0,2], r:[["…합의서 어디 있어? 서명할게!"],["조건 보고 얘기하자."],["법으로 가자."]]},
+  {m:["나 지금 해외 출장 중이라 연락이 안 돼"], s:[2,0,0,0,0,1], r:[["내용증명이 회사로…? 알았어 보낼게!"],["귀국하면 처리할게."],["해외라니까?"]] }
+];
+
+// 4단계 마이클 킴(김학철) 전용 뻔뻔한 콩글리시 대사 및 반응
+const E4 = [
+  {m:["Hey, Bro! Investment 원래 Risk 있는 거야. Business Delay 이해 좀 해줘."], s:[0,1,0,2,1,0], r:[["Oh, shit! 출금 금지라고?! 장난치지 마라 브로!"],["Delay라니… 스케줄 다시 짜볼게."],["리스크 타령하지 마."]]},
+  {m:["Oh my god... 나 지금 L.A. 비행기 안이야. 폰 꺼진다~ (배경음: 띡- 지하철 2호선)"], s:[1,0,2,1,0,0], r:[["아니 지하철 안내방송 소리 다 들리거든?! 당장 내려!"],["한국에 있다고? 알았어…"],["비행기 안이라니까?"]] },
+  {m:["Lawyer? 나 U.S. Citizen(미국 시민권자)이야~ K-Law 안 통한다고 ㅋㅋ"], s:[0,2,1,2,0,1], r:[["시민권자든 뭐든 국내 재산 다 압류할 거야."],["미국 시민권이라도 법은 똑같지…"],["미국 가든 말든."]]},
+  {m:["인스타에 내 사진 올렸어? Defamation(명예훼손)으로 고소한다 진짜!"], s:[0,0,2,1,0,2], r:[["…아니 사기꾼 폭로가 무슨 명예훼손이야! 당장 지울 테니까 돈 줘!"],["고소할 테면 해봐. 사기꾼 동네방네 소문 다 났어."],["마음대로 해."]]},
+  {m:["통장 밸런스 Zero야! Bankruptcy(파산) 신청할 거니까 소용없어!"], s:[1,1,1,2,0,0], r:[["파산이든 뭐든 할 수 있는 건 다 해줄게."],["파산은 무슨… 숨겨둔 자산 다 찾았다."],["배 째라 이거지?"]] },
+  {m:["김학철? 마이클 킴이지 누구요? 님 사람 잘못 봤어~ (충청도 사투리 억제 중)"], s:[0,2,2,1,0,1], r:[["충청도 사투리 튀어나오는 거 다 들렸다 학철아."],["본명 들통났네… 알았어 보낼게."],["사람 잘못 보긴 뭘 봐."]] }
 ];
 
 const H = [
@@ -257,6 +279,13 @@ const H3 = [
   "통장이 묶이는 가압류는 사업하는 사장님에게 치명적이야.",
   "폭력은 절대 해결책이 아니다! 회수한 돈의 절반을 깽값으로 빼앗긴다.",
   "깔끔하게 합의서를 제출하면 완만히 해결될 수 있다."
+];
+const H4 = [
+  "해외로 튀기 전에 출국금지로 발을 꽁꽁 묶어두자.",
+  "마이클이라는 가짜 이름 뒤의 본명(김학철)을 폭로하면 정신을 못 차린다.",
+  "사회적 평판이 생명인 사기꾼에게는 SNS 공론화가 가장 강력한 무기다.",
+  "은닉한 계좌와 자산을 가압류하면 뻔뻔한 태도가 바뀐다.",
+  "폭력은 회수 금액의 절반을 날리게 되니 최후의 수단으로만 조심스럽게."
 ];
 
 const $ = id => document.getElementById(id);
@@ -278,15 +307,21 @@ const SHOT = {
 const doc = (t, rows, memo) => '<div class="shot">' + bar('') + '<div class="dh">' + t + '</div>' + rows.map(r => '<div class="row"><div>' + r[0] + '</div><div class="a">' + r[1] + '</div></div>').join('') + (memo ? '<div class="memo">' + memo + '</div>' : '') + '</div>';
 
 Object.assign(SHOT, {
-  notice: () => doc("내용증명우편 접수증", [["발신인","나 (대리: 법무법인)"],["수신인","박 사장"],["제목","대여금 반환 청구"],["이행기한","3일 이내"]], "※ 불이행 시 즉시 legal 조치"),
-  order: () => doc("전자소송 · 지급명령 신청", [["사건번호","2026차전 4829"],["채권자","나"],["채무자","박 사장"],["청구금액","10,000,000원"]], "※ 접수 완료"),
-  seize: () => doc("채권가압류 결정문", [["사건","2026카단 1731"],["채무자","박 사장"],["대상","예금채권 (사업장 통장)"]], "※ 통장 거래 동결"),
-  court: () => doc("소장 접수증", [["사건","2026가소 5532 대여금"],["청구취지","원금 + 지연손해금"]], "※ 법원 접수 완료"),
-  deal: () => doc("합의서", [["원금","10,000,000원"],["조건","즉시 입금"],["서명","박 사장 ✍️"]], "※ 합의 이행")
+  notice: () => doc("내용증명우편 접수증", [["발신인","나"],["수신인","박 사장"],["제목","대여금 반환 청구"]], "※ 불이행 시 조치"),
+  order: () => doc("전자소송 · 지급명령 신청", [["사건번호","2026차전 4829"],["청구금액","10,000,000원"]], "※ 접수 완료"),
+  seize: () => doc("채권가압류 결정문", [["사건","2026카단 1731"],["대상","사업장 통장"]], "※ 동결"),
+  court: () => doc("소장 접수증", [["사건","2026가소 5532"],["청구취지","원금+지연이자"]], "※ 법원 접수"),
+  deal: () => doc("합의서", [["원금","10,000,000원"],["서명","박 사장 ✍️"]], "※ 완료"),
+  
+  // 4단계 전용 문서 샷
+  flightDoc: () => doc("법무부 출국금지 결정서", [["대상자","김학철 (마이클 킴)"],["사유","사기 및 재산 은닉 우려"],["조치","긴급 출국금지 (6개월)"]], "※ 공항 출국 차단됨"),
+  snsPost: () => doc("커뮤니티 폭로글", [["제목","스타트업 투자 사기꾼 마이클 킴(김학철)을 고발합니다."],["조회수","45,210"],["상태","실시간 랭킹 1위 핫게 등극"]], "※ 기업 평판 추락 중"),
+  seize4: () => doc("해외/가상자산 가압류", [["대상","마이클 킴 차명 계좌"],["금액","1억원 상당 동결"]], "※ 자산 인출 불가"),
+  deal4: () => doc("분할 변제 공정증서", [["채무자","김학철 (마이클)"],["조건","매달 2천만 원씩 5회 입금"],["공증","법무법인 승인"]], "※ 법적 구속력 부여")
 });
 
 function updateLobbyUI(){
-  for(let i=1; i<=3; i++){
+  for(let i=1; i<=4; i++){
     const cleared = localStorage.getItem('clear_stage_' + i);
     const tag = $('tag-' + i);
     const card = $('card-' + i);
@@ -365,7 +400,10 @@ function applyStage(){
   }
   $("av").textContent = NM[0]; $("nm").innerHTML = NM + " <i>›</i>";
   $("gl").textContent = NM + " 버티기"; $("ttl").textContent = "그 돈 언제 줄래 · " + won(TOTAL);
-  TT = stage === 3 ? T3 : T; EE = stage === 3 ? E3 : E; HH = stage === 3 ? H3 : H;
+  
+  if(stage === 4) { TT = T4; EE = E4; HH = H4; }
+  else if(stage === 3) { TT = T3; EE = E3; HH = H3; }
+  else { TT = T; EE = E; HH = H; }
 }
 
 function start(){
@@ -374,15 +412,19 @@ function start(){
   $("chat").innerHTML = "";
   if (stage === 1) {
     note("time", "iMessage\n오늘 오전 9:41");
-    note("note", "2년 전 추석, 민수가 “월급날 바로 줄게” 하고 빌려간 " + won(TOTAL) + ".\n핑계마다 효과적인 수법이 다르다. 같은 것만 쓰면 안 먹힌다.");
+    note("note", "2년 전 추석, 민수가 “월급날 바로 줄게” 하고 빌려간 " + won(TOTAL) + ".");
   } else if (stage === 2) {
     note("time", "iMessage\n오늘 오후 7:12");
-    note("note", "3년 전 대학 선배 태호가 빌려간 " + won(TOTAL) + ".\n민수보다 끈질기다. 기회는 " + MAX + "번.");
+    note("note", "3년 전 대학 선배 태호가 빌려간 " + won(TOTAL) + ".");
     bubble("them", "야 오랜만이다~ 돈 얘기 하려는 거 아니지? ㅋㅋ");
   } else if (stage === 3) {
     note("time", "iMessage\n오늘 오후 3:05");
-    note("note", "인테리어 사업한다며 빌려간 박 사장의 " + won(TOTAL) + ".\n법적 대응을 적절히 활용하자! (단, 폭력 사용 시 깽값 차감!)");
-    bubble("them", "천만 원? 사업하다 보면 그럴 수도 있지. 고소해 봐~ 변호사비만 날릴걸?");
+    note("note", "인테리어 사업한다며 빌려간 박 사장의 " + won(TOTAL) + ". (법적 대응 및 깽값 조심)");
+    bubble("them", "천만 원? 사업하다 보면 그럴 수도 있지. 고소해 봐~");
+  } else if (stage === 4) {
+    note("time", "iMessage\n오늘 오전 11:20");
+    note("note", "글로벌 투자라며 1억 원을 가로채고 잠적한 교포 행세 사기꾼 '마이클 킴(김학철)'.\n3단계보다 훨씬 악랄하고 뻔뻔합니다. SNS 공론화와 출국금지를 총동원하세요!");
+    bubble("them", "Hey, Bro! Investment는 원래 Risk가 큰 법이야. 기다려봐 좀!");
   }
   meters(); next();
 }
@@ -421,11 +463,11 @@ $("send").onclick = async function(){
   const rep = p.i === S.lastT; if (rep) sc = Math.max(0, sc - 1);
   S.lastT = p.i; S.t++;
   
-  // 3단계 특별 이벤트: 찾아가서 흠씬 패기 (깽값 50% 차감)
-  if (stage === 3 && p.i === 4) {
+  // 3~4단계 현피/폭력 이벤트 (찾아가서 패기: 인덱스 4)
+  if ((stage === 3 || stage === 4) && p.i === 4) {
     const penalty = Math.floor(S.paid * 0.5);
     S.paid -= penalty;
-    note("note", "👊 [현피 발생] 박 사장을 찾아가 흠씬 패주었습니다!\n경찰 출동으로 현재까지 회수한 돈의 절반(" + won(penalty) + ")을 깽값으로 지불했습니다.");
+    note("note", "👊 [경찰 출동] 찾아가서 깽판을 친 덕분에 합의금(깽값)으로 현재 회수금의 절반(" + won(penalty) + ")을 뜯겼습니다!");
     note("pay penalty", "🚨 깽값 지불: -" + won(penalty));
     S.g = Math.min(100, S.g + 15);
   } else {
@@ -441,11 +483,20 @@ $("send").onclick = async function(){
   
   for (const [th, amt] of PHASE) if (S.g <= th && !S.done["p"+th]) { S.done["p"+th] = 1; note("note", amt); }
   
-  // 3단계: 유효타(효과가 1 이상)일 때마다 30만 원 ~ 100만 원 사이 랜덤 입금
-  if (stage === 3 && sc > 0 && p.i !== 4) {
+  // 3단계 및 4단계 회수 로직 (4단계는 1억이라 10만~50만 원 단위로 쪼개서 쫄깃하게 회수)
+  if (stage === 4 && sc > 0 && p.i !== 4) {
     const remain = TOTAL - S.paid;
     if (remain > 0) {
-      // 버티기가 낮을수록 더 큰 금액 입금
+      let multiplier = (100 - S.g) / 100;
+      let rndAmt = Math.floor((Math.random() * 4 + 1 + multiplier * 5)) * 100000; // 10만~50만 단위
+      let actualPay = Math.min(remain, rndAmt);
+      S.paid += actualPay;
+      note("pay", "💸 마이클(김학철)이 압박에 못 이겨 " + won(actualPay) + "을 송금했습니다!");
+      meters(); await sleep(500);
+    }
+  } else if (stage === 3 && sc > 0 && p.i !== 4) {
+    const remain = TOTAL - S.paid;
+    if (remain > 0) {
       let multiplier = (100 - S.g) / 100;
       let rndAmt = Math.floor((Math.random() * 5 + 3 + multiplier * 4)) * 100000;
       let actualPay = Math.min(remain, rndAmt);
@@ -459,12 +510,12 @@ $("send").onclick = async function(){
     }
   }
   
-  // 게이지가 0이 되었을 때 아직 남은 잔액이 있다면 일시불 처리
+  // 게이지 0 도달 시 잔액 일시불 완납 처리
   if (S.g <= 0 && S.paid < TOTAL) {
     const remain = TOTAL - S.paid;
     S.paid = TOTAL;
-    note("note", "🏳️ 박 사장이 결국 항복했습니다! 남은 잔액을 전액 입금합니다.");
-    note("pay", "💸 박 사장이 남은 잔액 " + won(remain) + "을 전액 입금했습니다!");
+    note("note", "🏳️ 상대가 완전히 무너져 남은 잔액을 전액 입금합니다!");
+    note("pay", "💸 잔액 " + won(remain) + " 전액 입금 완료!");
     meters(); await sleep(600);
     return end(true);
   }
@@ -479,9 +530,9 @@ function end(win){
   if (win || S.paid >= TOTAL) {
     S.paid = TOTAL;
     localStorage.setItem('clear_stage_' + stage, 'true');
-    R = ["🏆 " + won(TOTAL) + " 완납 성공!", S.t + "번 만에 " + NM + "에게서 모든 돈을 완벽히 회수했습니다!"];
+    R = ["🏆 " + won(TOTAL) + " 완납 성공!", S.t + "번 만에 " + NM + "에게서 떼인 돈을 전액 회수했습니다! 영원히 기억될 추심 레전드."];
   } else {
-    R = ["📆 회수 실패…", "기회를 모두 사용했습니다. " + won(S.paid) + "만 회수하고 남은 돈은 받지 못했습니다."];
+    R = ["📆 회수 실패…", "기회를 모두 사용했습니다. " + won(S.paid) + "만 회수하고 남은 돈은 도주를 막지 못했습니다."];
   }
   
   const d = document.createElement("div"); d.className = "card";
@@ -493,7 +544,7 @@ function end(win){
   $("chat").appendChild(d); $("chat").scrollTop = 1e6;
 }
 
-// 최초 실행 시 로비 업데이트
+// 최초 로비 UI 반영
 updateLobbyUI();
 </script>
 </body>
